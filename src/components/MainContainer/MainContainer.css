@@ -1,0 +1,116 @@
+.main-wrap {
+    width: 700px;
+    height: 100%;
+    box-sizing: border-box;
+    border-right: 1px solid #e6e6e6;
+}
+
+.main-wrap .title-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 1px 2px #e6e6e6;
+}
+
+.title-container .chanel_title{
+    display: flex;
+    align-items: center;
+}
+
+.chanel_title > h3 {
+    margin: 0;
+}
+.title-container .toolbar{
+    display: flex;
+}
+
+.toolbar .add-note{
+    width: 27px;
+    height: 36px;
+    margin-right: .5em;
+    background-color: #e6e6e6;
+}
+
+.toolbar .add-category{
+    width: 0;
+    height: 0;
+    border: 18px solid transparent;
+    border-bottom-color: #e6e6e6;
+    position: relative;
+    top: -18px;
+}
+
+.toolbar .add-category::before{
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 18px;
+    width: 0;
+    height: 0;
+    border: 18px solid transparent;
+    border-top-color: #e6e6e6;
+}
+
+.category-wrap{
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 68px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.category-wrap > .category {
+    width: 95%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.category-wrap > .category > .category-item{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+}
+
+.category-item > h4 {
+    display: flex;
+    align-items: center;    
+    width: 100%;
+    height: 2em;
+    padding-left: .5em;
+    margin: .5em 0;
+    background-color: #efefef;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-weight: 400;
+}
+
+.category-item .meeting_note {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    margin-top: 1rem;
+    padding-bottom: .5em;
+    padding: 0;
+    list-style-type: none;
+}
+
+.meeting_note > li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 12rem;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    border-radius: 15px;
+    color: #bababa;
+}
+
+.meeting_note > li:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}
