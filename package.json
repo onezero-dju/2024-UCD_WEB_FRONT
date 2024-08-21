@@ -48,6 +48,7 @@
     "msw": "^2.3.0",
     "msw-storybook-addon": "^2.0.2",
     "prop-types": "^15.8.1",
+    "rollup": "^4.21.0",
     "storybook": "^8.1.4",
     "vite": "^5.2.0"
   },
