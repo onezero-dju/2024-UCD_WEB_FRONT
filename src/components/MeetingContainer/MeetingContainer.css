@@ -1,0 +1,48 @@
+.meeting-container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: .5rem 1rem;
+    box-sizing: border-box;
+}
+
+.meeting_title > h3 {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    min-width: 10em;
+    height: 2em;
+    margin: 0;
+    padding-left: .5em;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #efefef;
+    font-size: 1.1rem;
+}
+
+.meeting_title .participants {
+    display: flex;
+    height: 50px;
+    margin: 10px 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.participants > li > .profile-image {
+    width: 48px;
+    height: 48px;
+    background-color: #333;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.realtime_space{
+    flex: 1;
+    box-sizing: border-box;
+    border-radius: 20px;
+    border: 1px solid #ababab;
+}

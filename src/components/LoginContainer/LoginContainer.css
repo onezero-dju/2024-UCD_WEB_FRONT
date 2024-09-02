@@ -1,0 +1,52 @@
+.login-wrap {
+    width: 100%;
+    max-width: 25rem;
+    max-height: 35rem;
+}
+
+.login-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-wrap input{
+    height: 3em;
+    margin: .5em;
+    padding: .5em;
+    box-sizing: border-box;
+    border: 1px solid #505050;
+    border-radius: 10px;
+    font-family: "pretendard";
+}
+
+.login-wrap button{
+    flex-grow: 1;
+    height: 2.5em;
+    margin: .5em;
+    padding: 0;
+    box-sizing: border-box;
+    border: 1px solid #505050;
+    border-radius: 10px;
+    background-color: #505050;
+    font-weight: 500;
+    font-size: 1rem;
+    color: white;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.socal_login {
+    display: flex;
+}
+
+.socal_login .google-login{
+    background-color: #0b57d0;
+    border: 1px solid #0b57d0;
+}
+
+.socal_login .naver-login{
+    background-color: #00af35;
+    border: 1px solid #00af35;
+}

@@ -1,0 +1,147 @@
+.side {
+    display: flex;
+    flex-direction: column;
+    width: 290px;
+    height: 100vh;
+    border-right: 1px solid #e6e6e6;
+}
+
+.snb {
+    position: relative; 
+    flex: 1;
+    padding: 0;
+    background-color: #e6e6e6;
+}
+
+.team {
+    display: flex;
+    justify-content: center;
+    width: 70px;
+    height: 100%;
+}
+
+.team-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.team-list > li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-top: 10px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.team-list > li:hover {
+    background-color: #e6e6e6;
+    cursor: pointer;
+}
+
+.team-list > li.selected {
+    background-color: #333;
+    color: white;    
+}
+
+.channel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 70px;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    box-sizing: border-box;
+}
+
+.channel .channel-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    list-style-type: none;
+}
+
+.channel .channel-list > h2 {
+    width: 95%;
+    margin: 1em 0;
+    padding: 0 .5em;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    text-align: left;
+}
+
+.channel .channel-list > li {
+    display: flex;
+    align-items: center;
+    height: 2em;
+    width: 95%;
+    padding: 0 .5em;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.channel-list > li.selected{
+    background-color: #efefef;
+}
+
+.channel-list > li:hover{
+    background-color: #efefef;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+
+    padding: 1em;
+    background-color: white;
+    box-sizing: border-box;
+    border-top: 1px solid #e6e6e6;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.user-info > div {
+    display: flex;
+    align-items: center;
+}
+
+.user-name {
+    font-weight: 700;
+}
+
+.user-desc {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.settings{
+    width: 24px;
+    height: 24px;
+}
+
+.settings > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: invert(100%) brightness(60%) contrast(80%);
+}
