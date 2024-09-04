@@ -12,5 +12,5 @@ const Template = (args) => <ProfileModal {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-    setModalOpen: True
+    setModalOpen: true,
 }

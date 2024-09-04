@@ -1,23 +1,14 @@
+.presentation {
+    z-index: 1200;
+    position: absolute;
+}
+
 .wrapper-modal {
     position: fixed;
     inset: 0px;
     background-color: rgb(0 0 0 /71%);
     display: flex;
     justify-content: center;
-}
-
-.presentation {
-    z-index: 1200;
-    position: absolute;
-}
-
-.modal-close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    cursor: pointer;
-    z-index: 1000;
-    color: white;
 }
 
 .modal {
@@ -44,6 +35,16 @@
         transform: scale(1);
     }
 }
+
+.modal-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    color: white;
+}
+
 
 .modal::-webkit-scrollbar {
     display: none;
