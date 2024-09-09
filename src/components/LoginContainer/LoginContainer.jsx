@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import './LoginContainer.css'
 import { useNavigate, Link } from 'react-router-dom';
+import { Button } from '../Button/Button';
+import { Input } from '../Input/Input';
+import './LoginContainer.css'
 
 export default function LoginContainer() {
     const [id, setId] = useState("");
@@ -33,30 +35,24 @@ export default function LoginContainer() {
     return (
         <main className='login-container'>
             <form className='login-field' onSubmit={handleSubmit}>
-                <div className='input-component'>
-                    <input 
-                        type='text' id='email' className="input-field"
-                        onChange={(e) => setId(e.target.value)}
-                        required
-                    />
-                    <label htmlFor="email" className="input-label">이메일</label>
-                </div>
-                <div className='input-component'>
-                    <input 
-                        type='password' id='password' className="input-field"
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <label htmlFor="password" className="input-label">비밀번호</label>
-                </div>
-                <button type='submit'>로그인</button>
+                <Input 
+                    type='text' id='email' label='이메일'
+                    onChange={(e) => setId(e.target.value)}
+                    required
+                />
+                <Input
+                    type='password' id='password' label='비밀번호' 
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <Button type='submit' label='로그인' size='full' primary/>
             </form>
             <div className='signup-box'>
                 <Link to="/signup" className='text-href'>회원가입 &gt;</Link>
             </div>
             <div className='socal_login'>
-                <button className='google-login'>Google로 계속하기</button>
-                <button className='naver-login'>Naver로 계속하기</button>
+                <Button label='Google로 계속하기' size='full' />
+                <Button label='Naver로 계속하기' size='full' />
             </div>
         </main>
     )

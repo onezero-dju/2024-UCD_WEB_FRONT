@@ -10,78 +10,6 @@
     flex-direction: column;
 }
 
-.input-component{
-    position: relative;
-    margin-bottom: 10px;
-}
-
-.input-component .input-field{
-    width: 100%;
-    height: 38px;
-    margin: 0;
-    padding: 5px 13px;
-    box-sizing: border-box;
-    border: 1px solid #505050;
-    border-radius: 10px;
-}
-
-/* 크롬 브라우저 자동완성의 속성을 제거 */
-.input-component .input-field:-webkit-autofill{
-	-webkit-box-shadow: 0 0 0 1000px white inset;
-	box-shadow: 0 0 0 1000px white inset;
-}
-
-.input-component .input-label{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #6f6f6f;
-    transition: all .15s linear;
-}
-
-.input-field:valid ~ .input-label {
-    top: -5px;
-    padding: 0 5px;
-    font-size: 12px;
-    background-color: white;
-    color: #505050; 
-}
-
-.input-field:focus {
-    border: 2px solid #3F72AF;
-}
-
-.input-field:focus ~ .input-label {
-    top: -5px;
-    padding: 0 5px;
-    font-size: 12px;
-    background-color: white;
-    color: #3F72AF; 
-}
-
-.login-container input{
-    height: 3em;
-    margin: .5em;
-    padding: .5em;
-    box-sizing: border-box;
-    border: 1px solid #505050;
-    border-radius: 10px;
-}
-
-.login-container button{
-    flex-grow: 1;
-    height: 2.5em;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    border: 1px solid #505050;
-    border-radius: 10px;
-    background-color: #505050;
-    font-weight: 500;
-    font-size: 16px;
-    color: white;
-}
-
 .signup-box {
     display: flex;
     justify-content: end;
@@ -105,14 +33,4 @@ button:hover {
 .socal_login {
     display: flex;
     gap: 10px;
-}
-
-.socal_login .google-login{
-    background-color: #0b57d0;
-    border: 1px solid #0b57d0;
-}
-
-.socal_login .naver-login{
-    background-color: #00af35;
-    border: 1px solid #00af35;
 }
