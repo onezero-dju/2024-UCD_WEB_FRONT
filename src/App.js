@@ -1,10 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-import ProfileModal from './components/ProfileModal/ProfileModal';
+import ModalFrame from './components/ModalFrame/ModalFrame';
 
 function App() {
   return (
     <>
+      <ModalFrame/>
     </>
   );
 }

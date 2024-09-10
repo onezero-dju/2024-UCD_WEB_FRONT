@@ -50,3 +50,8 @@
     display: none;
     visibility: hidden;
 }
+
+.modal__poster-img {
+    width: 100%;
+    height: auto;
+}

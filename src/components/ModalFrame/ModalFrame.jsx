@@ -1,7 +1,9 @@
 import React, { useRef } from 'react'
+import './ModalFrame.css'
 
 const ProfileModal = ({
-        setModalOpen
+        setModalOpen,
+        children
     }) => {
     const ref = useRef();
     
@@ -13,9 +15,14 @@ const ProfileModal = ({
                         onClick={() => setModalOpen(false)}
                         className="modal-close"
                         >
-                        X
+                            X
                         </span>
-
+                        <img
+                            className='modal__poster-img'
+                            src={`/logo512.png`}
+                            alt="modal-img"
+                        />
+                        {children}
                     </div>
                 </div>
             </div>
