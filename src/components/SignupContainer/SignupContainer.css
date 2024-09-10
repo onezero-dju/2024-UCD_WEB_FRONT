@@ -1,0 +1,20 @@
+.signup-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-box {
+    display: flex;
+    justify-content: start;
+}
+
+.login-box > .text-href{
+    margin: 5px 0;
+    font-size: 15px;
+    color: #6f6f6f;
+    text-decoration-line: none;
+}
+
+.login-box > .text-href:hover{
+    cursor: pointer;
+}
