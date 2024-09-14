@@ -1,0 +1,18 @@
+.nav-rect-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.nav-rect-btn.clicked{
+    background-color: #efefef;
+}
+
+.nav-rect-btn:hover{
+    background-color: #efefef;
+    cursor: pointer;
+}

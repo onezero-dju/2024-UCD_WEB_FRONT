@@ -26,27 +26,6 @@
     margin: 0;
 }
 
-.team-list > li {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    margin-top: 10px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-.team-list > li:hover {
-    background-color: #e6e6e6;
-    cursor: pointer;
-}
-
-.team-list > li.selected {
-    background-color: #333;
-    color: white;    
-}
-
 .channel {
     position: absolute;
     top: 0;
@@ -80,20 +59,9 @@
 .channel .channel-list > li {
     display: flex;
     align-items: center;
-    height: 2em;
-    width: 95%;
-    padding: 0 .5em;
+    width: 100%;
+    padding: 0 8px;
     box-sizing: border-box;
-    border-radius: 10px;
-}
-
-.channel-list > li.selected{
-    background-color: #efefef;
-}
-
-.channel-list > li:hover{
-    background-color: #efefef;
-    cursor: pointer;
 }
 
 .user-info {

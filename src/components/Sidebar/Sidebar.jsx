@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './Sidebar.css'
+import { NavRectButton } from '../NavRectButton/NavRectButton';
+import { NavCirButton } from '../NavCirButton/NavCirButton';
 
 function Sidebar() {
 
@@ -138,33 +140,45 @@ function Sidebar() {
         <nav className='snb'>
             <div className='team'>
                 <ul className='team-list'>
-                {selectedOrgs.map(org => (
-                    <li
-                    key={org.organization_id}
-                    className={org.organization_id === selectedOrgId ? 'selected' : ''}
-                    onClick={() => handleOrganizationClick(org.organization_id)}
-                    >
-                    {org.organization_name}
-                    {org.organization_id === selectedOrgId && (
-                        <div className='channel'>
-                        <ul className='channel-list'>
-                            <h2>회의실</h2>
-                            {selectedChannels.map(channel => (
-                            <li
-                                key={channel.channel_id}
-                                className={channel.channel_id === selectedChannelId ? 'selected' : ''}
-                                onClick={(e) => handleChannelClick(e, channel.channel_id)}
-                            >
-                                {channel.name}
-                            </li>
-                            ))}
-                            <li>+</li>
-                        </ul>
-                        </div>
-                    )}
-                    </li>
-                ))}
-                <li>+</li>
+                    {selectedOrgs.map(org => (
+                        <li>
+                            <NavCirButton 
+                                dataId={org.organization_id}
+                                selectedId={selectedOrgId}
+                                label={org.organization_name}
+                                onClick={() => handleOrganizationClick(org.organization_id)}
+                            />
+                            {org.organization_id === selectedOrgId && (
+                                <div className='channel'>
+                                <ul className='channel-list'>
+                                    <h2>회의실</h2>
+                                    {selectedChannels.map(channel => (
+                                    <li>
+                                        <NavRectButton 
+                                            dataId={channel.channel_id}
+                                            selectedId={selectedChannelId}
+                                            label={channel.name}
+                                            onClick={(e) => handleChannelClick(e, channel.channel_id)}
+                                        />
+                                    </li>
+                                    ))}
+                                    <li>
+                                        <NavRectButton 
+                                            dataId='-1'
+                                            label='+'
+                                            onClick={console.log('Add Channel')}
+                                        />
+                                    </li>
+                                </ul>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                    <NavCirButton 
+                        dataId='-1'
+                        label='+'
+                        onClick={console.log('Add Organization')}
+                    />
                 </ul>
             </div>
         </nav>
