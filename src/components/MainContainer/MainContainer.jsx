@@ -1,5 +1,7 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { SectionTitle } from '../SectionTitle/SectionTitle';
+import { SectionLinkItem } from '../SectionLinkItem/SectionLinkItem';
 import './MainContainer.css'
 
 function MainContainer() {
@@ -85,7 +87,9 @@ function MainContainer() {
                   "meetings": [
                     { "meeting_id": 3003, "meeting_name": "Logo Redesign" },
                     { "meeting_id": 3004, "meeting_name": "Color Palette Approval" },
-                    { "meeting_id": 3005, "meeting_name": "Brand Guidelines Discussion" }
+                    { "meeting_id": 3005, "meeting_name": "Brand Guidelines Discussion" },
+                    { "meeting_id": 3006, "meeting_name": "Typography Selection" },
+                    { "meeting_id": 3007, "meeting_name": "Marketing Materials Review" }
                   ]
                 },
                 {
@@ -162,13 +166,15 @@ function MainContainer() {
                   ]
                 },
                 {
-                  "category_id": 602,
-                  "category_name": "Client Management",
-                  "meetings": [
-                    { "meeting_id": 6003, "meeting_name": "Client A Contract Review" },
-                    { "meeting_id": 6004, "meeting_name": "Client B Follow-up" }
-                  ]
-                }
+                    "category_id": 602,
+                    "category_name": "Client Management",
+                    "meetings": [
+                      { "meeting_id": 6003, "meeting_name": "Client A Contract Review" },
+                      { "meeting_id": 6004, "meeting_name": "Client B Follow-up" },
+                      { "meeting_id": 6005, "meeting_name": "Client C Feedback Session" },
+                      { "meeting_id": 6006, "meeting_name": "Client D Renewal Discussion" }
+                    ]
+                  }                  
               ]
             },
             {
@@ -231,13 +237,16 @@ function MainContainer() {
                   ]
                 },
                 {
-                  "category_id": 902,
-                  "category_name": "Product Launch",
-                  "meetings": [
-                    { "meeting_id": 9004, "meeting_name": "Launch Preparation" },
-                    { "meeting_id": 9005, "meeting_name": "Post-Launch Analysis" }
-                  ]
-                }
+                    "category_id": 902,
+                    "category_name": "Product Launch",
+                    "meetings": [
+                      { "meeting_id": 9004, "meeting_name": "Launch Preparation" },
+                      { "meeting_id": 9005, "meeting_name": "Post-Launch Analysis" },
+                      { "meeting_id": 9006, "meeting_name": "Marketing Strategy Review" },
+                      { "meeting_id": 9007, "meeting_name": "Customer Feedback Collection" },
+                      { "meeting_id": 9008, "meeting_name": "Launch Retrospective" }
+                    ]
+                  }                  
               ]
             },
             {
@@ -253,13 +262,14 @@ function MainContainer() {
                   ]
                 },
                 {
-                  "category_id": 1002,
-                  "category_name": "Budgeting",
-                  "meetings": [
-                    { "meeting_id": 10003, "meeting_name": "Q2 Budget Planning" },
-                    { "meeting_id": 10004, "meeting_name": "Cost Optimization Strategies" }
-                  ]
-                }
+                    "category_id": 1002,
+                    "category_name": "Budgeting",
+                    "meetings": [
+                      { "meeting_id": 10003, "meeting_name": "Q2 Budget Planning" },
+                      { "meeting_id": 10004, "meeting_name": "Cost Optimization Strategies" },
+                      { "meeting_id": 10005, "meeting_name": "Expense Report Review" }
+                    ]
+                  }                  
               ]
             }
           ]
@@ -272,11 +282,6 @@ function MainContainer() {
 
     const ChannelName = filteredData[0].channel_name;
     const categoriesByChannel = filteredData[0].categories;
-
-    // 노트 클릭 시 해당 meeting id로 라우팅
-    const handleMeetingClick = (id) => {
-        navigate(`/meeting/${id}`);
-    };
 
     return (
         <main className='main-wrap'>
@@ -293,15 +298,18 @@ function MainContainer() {
                 <ul className='category'>
                     {categoriesByChannel.map(category => (
                         <li className='category-item' key={category.category_id}>
-                        <h4>{category.category_name}</h4>
-                        <ul className='meeting_note'>
-                            {category.meetings.map(meeting => (
-                                <li key={meeting.meeting_id} onClick={() => handleMeetingClick(meeting.meeting_id)}>
-                                    {meeting.meeting_name}
-                                </li>
-                            ))}
-                            <li>+</li>  
-                        </ul>
+                            <SectionTitle text={category.category_name}/>
+                            <ul className='meeting_note'>
+                                {category.meetings.map(meeting => (
+                                    <li>
+                                        <SectionLinkItem 
+                                            id={meeting.meeting_id}
+                                            text={meeting.meeting_name}
+                                            to={`/meeting/${meeting.meeting_id}`}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
                         </li>
                     ))}
                 </ul>

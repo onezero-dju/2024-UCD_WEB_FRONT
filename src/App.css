@@ -37,6 +37,9 @@
   }
 }
 
+a {
+  text-decoration: none;
+}
 /* 페이지 가로 정렬 */
 .page-align-horizontal{
   display: flex;

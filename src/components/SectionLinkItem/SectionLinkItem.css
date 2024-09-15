@@ -1,0 +1,16 @@
+.meeting_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 192px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    border-radius: 15px;
+    color: #bababa;
+}
+
+.meeting_item:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}
