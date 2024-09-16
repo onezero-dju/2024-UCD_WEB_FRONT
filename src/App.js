@@ -10,8 +10,8 @@ function App() {
         <Routes>
           <Route path='/login' element={<AuthPage/>} />
           <Route path='/signup' element={<AuthPage/>} />
-          <Route path='/main' element={<MainPage/>} />
-          <Route path='/main/:organizationId/:channelId' element={<MainPage/>} />
+          <Route path='/main/:organizationId?/:channelId?' element={<MainPage/>} />
+          <Route path='/meeting/:meetingId' element={<MainPage/>} />
         </Routes>
       </Router>
     </div>

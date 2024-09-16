@@ -1,16 +1,12 @@
 import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SectionTitle } from '../SectionTitle/SectionTitle';
 import { SectionLinkItem } from '../SectionLinkItem/SectionLinkItem';
 import './MainContainer.css'
 
 function MainContainer() {
-    const navigate = useNavigate();
-    const { channelId } = useParams();
-    const selectedChannelId = Number(channelId);
-
-    // 임시 데이터
-    const response = {
+      // 임시 데이터
+      const response = {
         "code": 200,
         "message": "success",
         "data": {
@@ -276,6 +272,10 @@ function MainContainer() {
         }
     };
     const responseData = response.data;
+
+    const { channelId } = useParams();
+    const selectedChannelId = channelId ? Number(channelId) : responseData.channels[0].channel_id;
+
     // Channel ID에 따른 데이터 필터링
     // 추후 아래 코드는 API 설계 후 수정 필요
     const filteredData = responseData.channels.filter(channel => channel.channel_id === selectedChannelId);
