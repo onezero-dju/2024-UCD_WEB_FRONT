@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import './Sidebar.css'
 import { NavRectButton } from '../NavRectButton/NavRectButton';
 import { NavCirButton } from '../NavCirButton/NavCirButton';
+import { ProfileImage } from '../ProfileImage/ProfileImage';
+import './Sidebar.css'
 
 function Sidebar() {
 
@@ -184,7 +185,7 @@ function Sidebar() {
         </nav>
         <div className='user-info'>
             <div>
-                <div className='profile-image'>{myName[0]}</div>
+                <ProfileImage name={myName} size='medium'/>
                 <div>
                     <div className='user-name'>{myName}</div>
                     <div className='user-desc'>{myRole}</div>

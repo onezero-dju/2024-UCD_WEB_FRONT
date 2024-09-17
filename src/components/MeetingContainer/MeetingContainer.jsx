@@ -1,6 +1,7 @@
 import React from 'react'
-import './MeetingContainer.css'
 import { useParams } from 'react-router-dom';
+import { ProfileImage } from '../ProfileImage/ProfileImage';
+import './MeetingContainer.css'
 
 function MeetingContainer() {
     const { meetingId } = useParams();
@@ -82,16 +83,16 @@ function MeetingContainer() {
                 <h3>{meeting.meetingName}</h3>
                 <ul className='participants'>
                 <li>
-                    <div className='profile-image'>김</div>
+                    <ProfileImage name="김지우" size='large'/>
                 </li>
                 <li>
-                    <div className='profile-image'>이</div>
+                    <ProfileImage name="Emily Johnson" size='large'/> 
                 </li>
                 <li>
-                    <div className='profile-image'>정</div>
+                    <ProfileImage name="이민서" size='large'/>
                 </li>
                 <li>
-                    <div className='profile-image'>박</div>
+                    <ProfileImage name="Ethan Parker" size='large'/>
                 </li>
                 </ul>
             </div>

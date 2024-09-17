@@ -75,18 +75,6 @@
     background-color: white;
 }
 
-.profile-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background-color: #333;
-    color: white;
-}
-
 .user-info > div {
     display: flex;
     align-items: center;
