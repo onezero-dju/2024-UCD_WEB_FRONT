@@ -5,7 +5,7 @@ import './Input.css'
 /**
  * 입력 컴포넌트
  */
-export const Input = ({type, id, onChange, required, label}) => {
+export const Input = ({type='text', id='input', onChange, required=false, label}) => {
     return (
         <div className='input-component'>
             <input 
@@ -31,10 +31,4 @@ Input.propTypes = {
     onChange: PropTypes.func.isRequired,
     /** 필수 요구 여부 지정 */
     required: PropTypes.bool,
-};
-
-Input.defaultProps = {
-    type: 'text',
-    label: 'input',
-    required: false,
 };

@@ -4,6 +4,7 @@ import Sidebar from '../../components/Sidebar/Sidebar'
 import MainContainer from '../../components/MainContainer/MainContainer'
 import MeetingContainer from '../../components/MeetingContainer/MeetingContainer';
 import MeetingInfoContainer from '../../components/MeetingInfoContainer/MeetingInfoContainer';
+import { HomeDataProvider } from '../../hooks/HomeDataContext';
 import './MainPage.css'
 
 function MainPage() {
@@ -11,9 +12,12 @@ function MainPage() {
 
   return (
     <div className='main-page'>
-      <Sidebar />
-      {pathname.startsWith('/main') && <MainContainer />}
-      {pathname.startsWith('/meeting') && <><MeetingContainer /> <MeetingInfoContainer/></>}
+      <HomeDataProvider>
+        <Sidebar />
+
+        {pathname.startsWith('/main') && <MainContainer />}
+        {pathname.startsWith('/meeting') && <><MeetingContainer /> <MeetingInfoContainer/></>}
+      </HomeDataProvider>
     </div>
   )
 }

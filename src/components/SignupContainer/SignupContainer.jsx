@@ -30,7 +30,7 @@ function SignupContainer() {
         console.log("아이디:", id);
         console.log("비밀번호:", password2);
 
-        navigate('/start');
+        navigate('/main');
     };
 
   return (

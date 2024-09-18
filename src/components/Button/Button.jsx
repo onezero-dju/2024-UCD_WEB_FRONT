@@ -5,7 +5,7 @@ import './Button.css'
 /**
  * 버튼 컴포넌트
  */
-export const Button = ({primary, type, size, label}) => {
+export const Button = ({primary=false, type, size='medium', label='button'}) => {
   const mode = primary ? 'primary' : 'secondary';
 
   return (
@@ -22,10 +22,4 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
   /** 버튼 사이즈 지정 */
   size: PropTypes.oneOf(['medium', 'full']),
-};
-
-Button.defaultProps = {
-  primary: false,
-  type: 'button',
-  size: 'medium'
 };
