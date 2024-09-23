@@ -1,0 +1,51 @@
+.input-component{
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.input-component .input-field{
+    width: 100%;
+    height: 38px;
+    padding: 5px 13px;
+    box-sizing: border-box;
+    border: 1px solid #505050;
+    border-radius: 10px;
+} 
+
+/* 크롬 브라우저 자동완성의 속성을 제거 */
+.input-component .input-field:-webkit-autofill{
+	-webkit-box-shadow: 0 0 0 1000px white inset;
+	box-shadow: 0 0 0 1000px white inset;
+}
+
+.input-component .input-label{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #6f6f6f;
+    transition: all .15s linear;
+}
+
+.input-component .input-label:hover{
+    cursor: text;
+}
+
+.input-field:valid ~ .input-label {
+    top: -5px;
+    padding: 0 5px;
+    font-size: 12px;
+    background-color: white;
+    color: #505050; 
+}
+
+.input-field:focus {
+    border: 2px solid #3F72AF;
+}
+
+.input-field:focus ~ .input-label {
+    top: -5px;
+    padding: 0 5px;
+    font-size: 12px;
+    background-color: white;
+    color: #3F72AF; 
+}

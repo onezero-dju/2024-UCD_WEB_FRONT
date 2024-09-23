@@ -1,0 +1,34 @@
+.btn{
+    height: 38px;
+    box-sizing: border-box;
+    border: 1px solid #505050;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 16px;
+} 
+
+.btn.primary{
+    background-color: #505050;
+    color: white;
+}
+
+.btn.secondary{
+    background-color: white;
+    color: #505050;
+}
+
+.btn.secondary:hover{
+    background-color: #efefef;
+}
+
+.btn.full{
+    width: 100%;
+}
+
+.btn.medium{
+    padding: 0 15px;
+}
+
+.btn:hover{
+    cursor: pointer;
+}

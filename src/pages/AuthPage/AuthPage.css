@@ -1,0 +1,30 @@
+.auth-right{
+    width: 50%;
+    max-width: 500px;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: transform 0.5s ease;
+    overflow: hidden;
+}
+
+.slider{
+    display: flex;
+    align-items: center;
+    width: 200%;
+    gap: 5px;
+    transition: transform 0.7s ease;
+}
+
+.slider > * {
+    width: 50%;
+    padding: 10px;
+}
+  
+.move-left {
+    transform: translateX(0);
+}
+
+.move-right {
+    transform: translateX(-50%);
+}
+  
