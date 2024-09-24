@@ -1,0 +1,29 @@
+.login-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-box {
+    display: flex;
+    justify-content: end;
+}
+
+.signup-box > .text-href{
+    margin: 5px 0;
+    font-size: 15px;
+    color: #6f6f6f;
+    text-decoration-line: none;
+}
+
+.signup-box > .text-href:hover{
+    cursor: pointer;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.socal_login {
+    display: flex;
+    gap: 10px;
+}

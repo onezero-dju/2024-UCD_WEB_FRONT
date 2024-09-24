@@ -1,12 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
-import ModalFrame from './components/ModalFrame/ModalFrame';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AuthPage from './pages/AuthPage/AuthPage';
+import MainPage from './pages/MainPage/MainPage';
 
 function App() {
   return (
-    <>
-      <ModalFrame/>
-    </>
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path='/login' element={<AuthPage/>} />
+          <Route path='/signup' element={<AuthPage/>} />
+          <Route path='/main/:organizationId?/:channelId?' element={<MainPage/>} />
+          <Route path='/meeting/:meetingId' element={<MainPage/>} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
