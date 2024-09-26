@@ -1,15 +1,24 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
+import { userLogin } from '../../api/loginAPI';
 import './LoginContainer.css'
+import { IsLoginedContext } from '../../hooks/IsLogined';
 
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const {
+        isLogined,
+        setIsLogined,
+      } = useContext(IsLoginedContext);
+    //   useContext(IsLoginedContext); // Context 사용
+
+      
+    const handleSubmit = async (event) => {
         // 기본 폼 제출 방지
         event.preventDefault();
     
@@ -22,10 +31,15 @@ export default function LoginContainer() {
         // 추후 암호화 및 전송 필요
         console.log("아이디:", id);
         console.log("비밀번호:", password);
-        const isLoginSuccessful = true; 
-
+        const requsetData = {
+            "email": id,
+            "password": password
+        }
+        const isLoginSuccessful = await userLogin(requsetData); 
+        console.log(isLoginSuccessful);
         // 성공 여부 확인
         if (isLoginSuccessful) {
+            setIsLogined(true);
             navigate('/main');
         } else {
             alert('아이디 또는 비밀번호가 올바르지 않습니다.');

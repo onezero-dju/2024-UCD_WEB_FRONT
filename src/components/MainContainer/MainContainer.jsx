@@ -6,7 +6,7 @@ import { getMainData } from '../../api/mainDataAPI';
 import './MainContainer.css'
 
 function MainContainer() {
-    const [filteredData, setFilteredData] = useState('');
+    const [filteredData, setFilteredData] = useState(null);
 
     // selectedChannelId를 기반으로 categories, meetings data 요청
     const { selectedChannelId } = useContext(HomeDataContext);
@@ -17,14 +17,19 @@ function MainContainer() {
         }
         fetchData();
     }, [selectedChannelId])
-    const ChannelName = filteredData.channel_name;
-    const categoriesByChannel = filteredData.categories;
-
+    const [channelName, setChannelName] = useState('');
+    const [categoriesByChannel, setCategoriesByChannel] = useState('');
+    // const ChannelName = filteredData.channel_name;
+    // const categoriesByChannel = filteredData.categories;
+    if (filteredData) {
+        setChannelName(filteredData.channel_name);
+        setCategoriesByChannel(filteredData.categories);
+    }
     return (
         <main className='main-wrap'>
             <div className='title-container'>
                 <div className='chanel_title'>
-                    <h3>{ChannelName}</h3>
+                    <h3>{channelName}</h3>
                 </div>
                 <div className='toolbar'>
                     <div className='add-note'></div>

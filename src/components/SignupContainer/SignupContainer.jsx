@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Input } from '../Input/Input'
 import { Button } from '../Button/Button'
+import { userSignUp } from '../../api/signupAPI'
 import './SignupContainer.css'
 
 function SignupContainer() {
@@ -11,7 +12,7 @@ function SignupContainer() {
     const [userName, setUserName] = useState('')
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         // 기본 폼 제출 방지
         event.preventDefault();
     
@@ -25,12 +26,26 @@ function SignupContainer() {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
-    
-        // 암호화 및 전송 필요
-        console.log("아이디:", id);
-        console.log("비밀번호:", password2);
+        console.log(userName);
+        const requestData = {
+            "username": userName,
+            "email": id,
+            "password": password1,
+        };
 
-        navigate('/main');
+        // 회원가입 성공시 true 반환
+        const response = await userSignUp(requestData)
+        // console.log("아이디:", id);
+        // console.log("비밀번호:", password2);
+        console.log(response);
+
+        if (response) {
+            alert('회원가입 성공! /n 새로 로그인해주세요.')
+            // 리셋 코드 필요
+            navigate('/login');
+        } else {
+            alert('회원가입 실패! /n 다시 시도해주세요.');
+        }        
     };
 
   return (

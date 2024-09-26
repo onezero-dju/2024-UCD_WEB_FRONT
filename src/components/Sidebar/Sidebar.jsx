@@ -20,7 +20,9 @@ function Sidebar() {
     setSelectedChannelId,
     setSelectedOrgs,
     setSelectedChannels,
-  } = useContext(HomeDataContext); // Context 사용
+  } = useContext(HomeDataContext); 
+  
+  console.log(`homedata: ${homeData}`);
 
     const navigate = useNavigate();
 
@@ -49,7 +51,7 @@ function Sidebar() {
         <nav className='snb'>
             <div className='team'>
                 <ul className='team-list'>
-                    {selectedOrgs.map(org => (
+                    {selectedOrgs && selectedOrgs.map(org => (
                         <li key={org.organization_id}>
                             <NavCirButton 
                                 dataId={org.organization_id}
