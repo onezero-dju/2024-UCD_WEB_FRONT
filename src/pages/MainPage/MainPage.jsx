@@ -6,9 +6,11 @@ import MeetingContainer from '../../components/MeetingContainer/MeetingContainer
 import MeetingInfoContainer from '../../components/MeetingInfoContainer/MeetingInfoContainer';
 import { HomeDataProvider } from '../../hooks/HomeDataContext';
 import './MainPage.css'
+import useCheckLogin from "../../hooks/useCheckLogin";
 
 function MainPage() {
   const { pathname } = useLocation();
+  useCheckLogin(); // 로그인 상태 확인
 
   return (
     <div className='main-page'>
