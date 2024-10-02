@@ -8,7 +8,7 @@ const useCheckLogin = () => {
 
     useEffect(() => {
         if(cookies === undefined) {
-            navigate('/');
+            navigate('/main');
         }
     }, [cookies]);
 }

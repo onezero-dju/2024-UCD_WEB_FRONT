@@ -40,7 +40,7 @@ function SignupContainer() {
             })
             if(response.data.code === 200){
                 alert("회원가입 성공")
-                navigate('/')
+                navigate('/login')
             }
         }catch(error){
             console.error("회원가입 실패")
