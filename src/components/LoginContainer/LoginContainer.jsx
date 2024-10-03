@@ -5,12 +5,15 @@ import { Input } from '../Input/Input';
 import {useCookies} from "react-cookie";
 import './LoginContainer.css'
 import axios from "axios";
+import useCheckLogin from "../../hooks/useCheckLogin";
 
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [cookies, setCookie] = useCookies(['token']);
+
+    useCheckLogin();
 
 
 
@@ -36,11 +39,8 @@ export default function LoginContainer() {
             });
             if(response.data.code === 200){
                 alert("로그인이 성공하였습니다");
-                setCookie('token', response.data.data);
+                await setCookie('token', response.data.data);
                 // console.log(cookies['token']);
-                if(cookies['token']){
-                    navigate('/main');
-                }
             }else{
                 alert("로그인이 실패하였습니다");
             }

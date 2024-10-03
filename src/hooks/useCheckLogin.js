@@ -7,8 +7,11 @@ const useCheckLogin = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!cookies['token']) {
-            navigate('/login');
+        if (cookies['token']) {
+            navigate('/main');
+        }
+        else{
+            navigate('/login')
         }
     }, [cookies['token']]);
 }
