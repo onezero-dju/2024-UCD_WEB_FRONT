@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
 const useCheckLogin = () => {
-    const [cookies] = useCookies(['token']);
+    const [cookies, setCookie] = useCookies(['token']);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,5 +14,7 @@ const useCheckLogin = () => {
             navigate('/login')
         }
     }, [cookies['token']]);
+
+    return [cookies, setCookie];
 }
 export default useCheckLogin;

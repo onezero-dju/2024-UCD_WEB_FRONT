@@ -10,10 +10,7 @@ import useCheckLogin from "../../hooks/useCheckLogin";
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-    const [cookies, setCookie] = useCookies(['token']);
-
-    useCheckLogin();
+    const [cookies, setCookie] = useCheckLogin();
 
 
 
