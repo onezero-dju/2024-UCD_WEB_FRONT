@@ -36,8 +36,9 @@ export default function LoginContainer() {
             });
             if(response.data.code === 200){
                 alert("로그인이 성공하였습니다");
-                setCookie('token', response.data.token);
-                if(cookies !== undefined){
+                setCookie('token', response.data.data);
+                // console.log(cookies['token']);
+                if(cookies['token']){
                     navigate('/main');
                 }
             }else{
