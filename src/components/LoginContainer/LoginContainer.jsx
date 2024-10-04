@@ -2,14 +2,19 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
+import {useCookies} from "react-cookie";
 import './LoginContainer.css'
+import axios from "axios";
+import useCheckLogin from "../../hooks/useCheckLogin";
 
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const [cookies, setCookie] = useCheckLogin();
 
-    const handleSubmit = (event) => {
+
+
+    const handleSubmit = async (event) => {
         // 기본 폼 제출 방지
         event.preventDefault();
     
@@ -22,13 +27,24 @@ export default function LoginContainer() {
         // 추후 암호화 및 전송 필요
         console.log("아이디:", id);
         console.log("비밀번호:", password);
-        const isLoginSuccessful = true; 
 
-        // 성공 여부 확인
-        if (isLoginSuccessful) {
-            navigate('/main');
-        } else {
-            alert('아이디 또는 비밀번호가 올바르지 않습니다.');
+        // 로그인 요청 API 통신
+        try{
+            const response = await axios.post('http://localhost:8080/login', {
+                "email": id,
+                "password": password
+            });
+            if(response.data.code === 200){
+                alert("로그인이 성공하였습니다");
+                await setCookie('token', response.data.data);
+                // console.log(cookies['token']);
+            }else{
+                alert("로그인이 실패하였습니다");
+            }
+
+        }catch(error){
+            console.error('로그인 에러', error);
+            alert("로그인 실패");
         }
     };
 

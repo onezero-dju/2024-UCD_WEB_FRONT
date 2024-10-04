@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { Input } from '../Input/Input'
 import { Button } from '../Button/Button'
 import './SignupContainer.css'
+import axios from "axios";
 
 function SignupContainer() {
     const [id, setId] = useState('')
@@ -11,7 +12,7 @@ function SignupContainer() {
     const [userName, setUserName] = useState('')
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         // 기본 폼 제출 방지
         event.preventDefault();
     
@@ -30,7 +31,20 @@ function SignupContainer() {
         console.log("아이디:", id);
         console.log("비밀번호:", password2);
 
-        navigate('/main');
+        // 회원가입 요청 API 통신
+        try{
+            const response = await axios.post('http://localhost:8080/api/users/signup',{
+                "username": userName,
+                "email": id,
+                "password": password1
+            })
+            if(response.data.code === 200){
+                alert("회원가입 성공")
+                navigate('/login')
+            }
+        }catch(error){
+            console.error("회원가입 실패")
+        }
     };
 
   return (
