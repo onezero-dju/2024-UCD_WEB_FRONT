@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
-import {useCookies} from "react-cookie";
 import './LoginContainer.css'
 import axios from "axios";
 import useCheckLogin from "../../hooks/useCheckLogin";
@@ -10,9 +9,7 @@ import useCheckLogin from "../../hooks/useCheckLogin";
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const [cookies, setCookie] = useCheckLogin();
-
-
+    const [cookies, setCookie] = useCheckLogin('token');
 
     const handleSubmit = async (event) => {
         // 기본 폼 제출 방지
@@ -30,21 +27,26 @@ export default function LoginContainer() {
 
         // 로그인 요청 API 통신
         try{
-            const response = await axios.post('http://localhost:8080/login', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {
                 "email": id,
                 "password": password
             });
             if(response.data.code === 200){
                 alert("로그인이 성공하였습니다");
-                await setCookie('token', response.data.data);
+                setCookie('token', response.data.token);
                 // console.log(cookies['token']);
             }else{
                 alert("로그인이 실패하였습니다");
             }
 
         }catch(error){
-            console.error('로그인 에러', error);
-            alert("로그인 실패");
+            if(error.code === 401){
+                alert(error.message);
+            }
+            else{
+                console.error('로그인 에러', error);
+                alert("로그인 실패");
+            }
         }
     };
 
