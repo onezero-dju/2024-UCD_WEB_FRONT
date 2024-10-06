@@ -12,7 +12,7 @@ export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie] = useCookies(['token']);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -88,8 +88,12 @@ export default function LoginContainer() {
                 />
                 <Button type='submit' label='로그인' size='full' primary/>
             </form>
-            {isModalOpen ? <ModalFrame>
+            {isModalOpen ?
+            <ModalFrame>
                 {/*조직 생성과 조직 신청 모달창*/}
+                <div>
+                    굿!
+                </div>
             </ModalFrame>:<></>}
             <div className='signup-box'>
                 <Link to="/signup" className='text-href'>회원가입 &gt;</Link>
