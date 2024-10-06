@@ -4,6 +4,7 @@ import { SectionLinkItem } from '../SectionLinkItem/SectionLinkItem';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
 import { getMainData } from '../../api/mainDataAPI';
 import './MainContainer.css'
+import SignOutButton from "../SignOutButton/SignOutButton";
 
 function MainContainer() {
     const [filteredData, setFilteredData] = useState('');
@@ -27,6 +28,7 @@ function MainContainer() {
                     <h3>{ChannelName}</h3>
                 </div>
                 <div className='toolbar'>
+                    <SignOutButton/>
                     <div className='add-note'></div>
                     <div className='add-category'></div>
                 </div>

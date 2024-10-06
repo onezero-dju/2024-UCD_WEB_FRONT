@@ -10,7 +10,7 @@ import useCheckLogin from "../../hooks/useCheckLogin";
 
 function MainPage() {
   const { pathname } = useLocation();
-  useCheckLogin(); // 로그인 상태 확인
+  useCheckLogin('token'); // 로그인 상태 확인
 
   return (
     <div className='main-page'>
