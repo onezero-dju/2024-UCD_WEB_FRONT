@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { Button } from '../Button/Button';
 import { Input } from '../Input/Input';
 import './LoginContainer.css'
 import axios from "axios";
 import useCheckLogin from "../../hooks/useCheckLogin";
+import {useCookies} from "react-cookie";
+import ModalFrame from "../ModalFrame/ModalFrame";
 
 export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const [cookies, setCookie] = useCheckLogin('token');
+    const [cookies, setCookie] = useCookies(['token']);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         // 기본 폼 제출 방지
@@ -34,6 +38,7 @@ export default function LoginContainer() {
             if(response.data.code === 200){
                 alert("로그인이 성공하였습니다");
                 setCookie('token', response.data.token);
+                checkUserOrganization(response.data.token);
                 // console.log(cookies['token']);
             }else{
                 alert("로그인이 실패하였습니다");
@@ -50,6 +55,24 @@ export default function LoginContainer() {
         }
     };
 
+    const checkUserOrganization = async(token) => {
+        try{
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            if(response.data){
+                navigate('/main')
+            }
+            else{
+                setIsModalOpen(true);
+            }
+        }catch{
+
+        }
+    }
+
     return (
         <main className='login-container'>
             <form className='login-field' onSubmit={handleSubmit}>
@@ -65,6 +88,9 @@ export default function LoginContainer() {
                 />
                 <Button type='submit' label='로그인' size='full' primary/>
             </form>
+            {isModalOpen ? <ModalFrame>
+                {/*조직 생성과 조직 신청 모달창*/}
+            </ModalFrame>:<></>}
             <div className='signup-box'>
                 <Link to="/signup" className='text-href'>회원가입 &gt;</Link>
             </div>
