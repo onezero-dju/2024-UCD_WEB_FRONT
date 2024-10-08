@@ -1,5 +1,6 @@
 import axios from 'axios';
-// import {useCookies} from "react-cookie";
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 // 임시 데이터
 const temp_response = {
@@ -99,28 +100,40 @@ const temp_response = {
     }
 };
 
-export const useHomeData = async () => {
-  try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/home`, {
-      withCredentials: true, 
-      headers: {
-        // 'Cookie': cookies.token,
-        'Content-Type': 'application/json',
-      },
-    });
+export const useHomeData = () => {
+  const [cookies] = useCookies('token');
+  const [homeData, setHomeData] = useState(null);
 
-    if (response.status === 200) {
-      console.log(response.data);
-      return response.data.data;
-    } else {
-      throw new Error(`Error: Received status code ${response.status}`);
-    }
-  } catch (error) {
-    // 403 에러 시 임시데이터로 처리, 추후 수정 필요
-    if (error.response && error.response.status === 403) {
-      return temp_response.data;
-    } else {
-      return false;
-    }
-  }
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/home`, {
+          headers: {
+            'Authorization': `Bearer ${cookies.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (response.status === 200) {
+          console.log(response.data.data);
+          setHomeData(response.data.data);
+        } else {
+          throw new Error(`Error: Received status code ${response.status}`);
+        }
+      } catch (error) {
+        // 403 에러 시 임시데이터로 처리, 추후 수정 필요
+        if (error.response && error.response.status === 403) {
+          setHomeData(temp_response.data);
+        } else {
+          setHomeData(false);
+        }
+      }
+    };
+
+    fetchHomeData();
+
+  }, [cookies.token]);
+
+  return homeData;
+
 };

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useCookies } from "react-cookie";
+import { useState, useEffect } from "react";
 
 // 임시 데이터
 const temp_response = {
@@ -267,27 +269,45 @@ const temp_response = {
     }
 };
 
-export const useGetCategories = async (channel_id) => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/channel/${channel_id}/meetings`, {
-            withCredentials: true, 
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-      if (response.code === 200) {
-        console.log(`Categories: ${response.data}`);
-        return response.data;
-      } 
-    } catch (error) {
+export const useGetCategories = (channel_id) => {
+  const [cookies] = useCookies('token');
+  const [categoryData, setCategoryData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(()=>{
+    const fetchGetCatagories = async () => {
+      try {
+          setLoading(true); 
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/channel/${channel_id}/meetings`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${cookies.token}`,
+              },
+            });
+        if (response.code === 200) {
+          setCategoryData(response.data);
+        } 
+      } catch (error) {
+        setError(error);
         // 403 에러 시 임시데이터로 처리, 추후 수정 필요
         if (error.response && error.response.status === 403) {
             const responseData = temp_response.data;
             // channel_id에 따른 데이터 반환
             const filteredData = responseData.channels.filter(channel => channel.channel_id === channel_id);
-            return filteredData[0];            
+            setCategoryData(filteredData[0]);
+
         } else {
-            return false;
+          setCategoryData(false);
         }
-    }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGetCatagories();
+    
+  }, [channel_id, cookies.token]);
+
+  return { categoryData, loading, error };
 };

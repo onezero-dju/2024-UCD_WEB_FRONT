@@ -4,7 +4,9 @@ import { useHomeData } from '../api/useHomeData';
 export const HomeDataContext = createContext();
 
 export const HomeDataProvider = ({ children }) =>  {
-  const [homeData, setHomeData] = useState(null);
+  // useHomeData 훅을 최상단에서 호출
+  const homeData = useHomeData();
+
   const [selectedOrgId, setSelectedOrgId] = useState(null);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
   const [selectedOrgs, setSelectedOrgs] = useState([]);
@@ -13,30 +15,21 @@ export const HomeDataProvider = ({ children }) =>  {
   const [myRole, setMyRole] = useState('');
 
   useEffect(() => {
-    const FetchHomeData = async () => {
-      try {
-        const data = await useHomeData();
-        setHomeData(data);
-
-        if (data && data.organizations && data.organizations.length > 0) {
-          setSelectedOrgId(data.organizations[0].organization_id);
-          setSelectedChannelId(data.organizations[0].channels[0].channel_id);
-          setSelectedOrgs(data.organizations);
-          setSelectedChannels(data.organizations[0].channels);
-          setMyName(data.user.user_name);
-          setMyRole(data.user.role);
-        }
-      } catch (error) {
-        console.error('Error fetching home data:', error);
-      }
-    };
-
-    FetchHomeData();
-  }, []);
-
-  if (!homeData) {
-    return <div>Loading...</div>;
-  }
+    // homeData가 로드된 후에만 상태 업데이트
+    if (homeData && homeData.organizations && homeData.organizations.length > 0) {
+      setSelectedOrgId(homeData.organizations[0].organization_id);
+      setSelectedChannelId(homeData.organizations[0].channels[0].channel_id);
+      setSelectedOrgs(homeData.organizations);
+      setSelectedChannels(homeData.organizations[0].channels);
+      setMyName(homeData.user.username);
+      setMyRole(homeData.user.role);
+    } 
+    // home데이터는 있지만 사용자가 속한 조직이 없을 때
+    else if (homeData && homeData.organizations) {
+      setMyName(homeData.user.username);
+      setMyRole(homeData.user.role);
+    }
+  }, [homeData]);
 
   return (
     <HomeDataContext.Provider
