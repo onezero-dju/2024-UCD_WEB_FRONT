@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { NavRectButton } from '../NavRectButton/NavRectButton';
 import { NavCirButton } from '../NavCirButton/NavCirButton';
@@ -8,12 +8,21 @@ import './Sidebar.css'
 import ProfileModal from '../ModalFrame/ModalFrame';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
+import { useGenOrg } from '../../api/useHandleOrg';
 
 function Sidebar() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isAddOrgModalOpen, setAddOrgModalOpen] = useState(false);
+  const [isGenOrgSectionOpen, setGenOrgSectionOpen] = useState(false);
+  const [genOrgName, setGenOrgName] = useState('');
+  const [genOrgDisc, setGenOrgDisc] = useState('');
   const [genChannelName, setGenChannelName] = useState('');
   const [genChannelDisc, setGenChannelDisc] = useState('');
+  const [joinOrgID, setJoinOrgID] = useState('');
+  const [joinOrgMsg, setJoinOrgMsg] = useState('');
   
+  const { data: genOrgResponse, loading, error, generateOrganization } = useGenOrg();
+
   const {
     homeData,
     myName,
@@ -26,7 +35,7 @@ function Sidebar() {
     setSelectedChannelId,
     setSelectedOrgs,
     setSelectedChannels,
-  } = useContext(HomeDataContext); // Context 사용
+  } = useContext(HomeDataContext);
 
     const navigate = useNavigate();
 
@@ -50,6 +59,48 @@ function Sidebar() {
         navigate('/main')
     }
 
+    // 조직 생성
+    const HanddleGenOrg = async () => {
+        // 유효성 검사
+        if(!genOrgName) {alert('조직 이름을 입력해주세요'); return}
+        else if(!genOrgDisc) {alert('조직 설명을 작성해주세요'); return}
+        
+            // 데이터 통신 로직 추가
+            console.log(`조직명: ${genOrgName}`)
+            console.log(`조직 설명: ${genOrgDisc}`)
+            const data = {
+                "organization_name": genOrgName,
+                "description": genOrgDisc
+            };
+            
+            await generateOrganization(data);
+            console.log(genOrgResponse);
+
+    }
+
+    useEffect(() => {
+        console.log(`loading: ${loading}`);
+        console.log(`error: ${error}`);
+        console.log(`genOrgResponse: ${genOrgResponse}`);
+        
+        if (!loading && genOrgResponse) {
+            console.log("genOrgResponse:", genOrgResponse);
+            alert(`조직을 생성하였습니다.`);
+            setModalOpen(false);
+          } else if (!loading && error) {
+            console.error("Error:", error);
+            alert('다시 시도해주세요.');
+          }
+      }, [genOrgResponse, loading, error]);
+
+    // 사용자가 가입한 조직이 있는지 확인
+    const checkOrgLength = () => {
+        if(selectedOrgs || selectedOrgs.length === 0) {
+            alert('가입된 조직이 없습니다.\n조직에 가입 요청을 보내거나 조직을 생성해주세요.');
+            setAddOrgModalOpen(true);
+        }
+    }
+
     // Chaanel 생성 함수
     const handdleGenChannel = () => {
         // 유효성 검사
@@ -63,6 +114,27 @@ function Sidebar() {
             alert(`${genChannelName} 회의실을 생성하였습니다.`)
             // 창 닫기            
             setModalOpen(false)
+        }
+    }
+
+    // 조직 가입 요청
+    const RequestJoinOrg = () => {
+        // 유효성 검사
+        if(!joinOrgID) {alert('가입 요청을 보낼 조직의 아이디를 입력해주세요')}
+        else if(!joinOrgMsg) {setJoinOrgMsg('조직에 가입하고 싶어요.')}
+        else {
+            console.log(`Request to ${joinOrgID}`);
+            alert(`${joinOrgID}에 가입 요청을 보냈습니다.`)
+            // 창 닫기            
+            setAddOrgModalOpen(false)
+        }
+    }
+
+    const handleGenOrgSection = () => {
+        if (isGenOrgSectionOpen) {
+            setGenOrgSectionOpen(false);
+        } else {
+            setGenOrgSectionOpen(true)
         }
     }
 
@@ -129,8 +201,54 @@ function Sidebar() {
                         <NavCirButton 
                             dataId={0}
                             label='+'
-                            onClick={() => console.log('Add Organization')}
+                            onClick={() => setAddOrgModalOpen(true)}
                         />
+                        {isAddOrgModalOpen && (<ProfileModal setModalOpen={setAddOrgModalOpen}>
+                            <div className={'modal-temp'}>
+                                <div className={`modal-slider ${isGenOrgSectionOpen ? 'slide-bottom' : 'slide-top'}`}>
+                                    <h4 className='modal-title'>조직 참가하기</h4>
+                                    <div className='modal-content'>
+                                        <Input 
+                                            type='text' id='join-org-id' label='조직 아이디 입력'
+                                            onChange={(e) => setJoinOrgID(e.target.value)}
+                                            required
+                                        />
+                                        <Input 
+                                            type='text' id='join-org-msg' label='요청 메시지'
+                                            onChange={(e) => setJoinOrgMsg(e.target.value)}
+                                            required
+                                        />
+                                        <Button 
+                                            type='submit' label='가입 요청' size='full' primary
+                                            onClick={() => RequestJoinOrg()}
+                                        />
+                                    </div>
+                                    <div className="separator">
+                                        {/* <div className="line"></div> */}
+                                        <span className='view-gen-org-section' onClick={()=>handleGenOrgSection()}>{isGenOrgSectionOpen ? '가입 요청하기':'또는 직접 생성하기'}</span>
+                                        {/* <div className="line"></div> */}
+                                    </div>
+                                    <h4 className='modal-title'>조직 생성</h4>
+                                    <div className='modal-content'>
+                                        <Input 
+                                            type='text' id='gen-org-name' label='조직 이름'
+                                            onChange={(e) => setGenOrgName(e.target.value)}
+                                            required
+                                        />
+                                        <Input 
+                                            type='text' id='gen-org-disc' label='조직 설명'
+                                            onChange={(e) => setGenOrgDisc(e.target.value)}
+                                            required
+                                        />
+                                        <Button 
+                                            type='submit' label='조직 생성' size='full' primary
+                                            onClick={() => HanddleGenOrg()}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </ProfileModal>
+                        )}
                     </li>   
                 </ul>
             </div>

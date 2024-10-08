@@ -4,7 +4,7 @@ import { useHomeData } from '../api/useHomeData';
 export const HomeDataContext = createContext();
 
 export const HomeDataProvider = ({ children }) =>  {
-  // useHomeData 훅을 최상단에서 호출
+
   const homeData = useHomeData();
 
   const [selectedOrgId, setSelectedOrgId] = useState(null);
@@ -16,11 +16,15 @@ export const HomeDataProvider = ({ children }) =>  {
 
   useEffect(() => {
     // homeData가 로드된 후에만 상태 업데이트
-    if (homeData && homeData.organizations && homeData.organizations.length > 0) {
+    if (homeData && homeData.organizations && homeData.organizations.length > 0) {     
       setSelectedOrgId(homeData.organizations[0].organization_id);
-      setSelectedChannelId(homeData.organizations[0].channels[0].channel_id);
       setSelectedOrgs(homeData.organizations);
-      setSelectedChannels(homeData.organizations[0].channels);
+
+      if(homeData.organizations[0].channels.length > 0){
+        setSelectedChannelId(homeData.organizations[0].channels[0].channel_id);
+        setSelectedChannels(homeData.organizations[0].channels);
+      }
+
       setMyName(homeData.user.username);
       setMyRole(homeData.user.role);
     } 
