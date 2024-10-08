@@ -2,21 +2,21 @@ import React, { useContext, useEffect, useState } from 'react'
 import { SectionTitle } from '../SectionTitle/SectionTitle';
 import { SectionLinkItem } from '../SectionLinkItem/SectionLinkItem';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
-import { getMainData } from '../../api/mainDataAPI';
-import './MainContainer.css'
+import { useGetCategories } from '../../api/useGetCategories';
 import SignOutButton from "../SignOutButton/SignOutButton";
+import './MainContainer.css'
 
 function MainContainer() {
     const [filteredData, setFilteredData] = useState('');
 
-    // selectedChannelId를 기반으로 categories, meetings data 요청
+    // selectedChannelId를 기반으로 categories, meetingDTOList data 요청
     const { selectedChannelId } = useContext(HomeDataContext);
     useEffect( () => {
-        const fetchData = async () => {
-            const mainData = await getMainData(selectedChannelId);
+        const FetchData = async () => {
+            const mainData = await useGetCategories(selectedChannelId);
             setFilteredData( mainData );
         }
-        fetchData();
+        FetchData();
     }, [selectedChannelId])
     const ChannelName = filteredData.channel_name;
     const categoriesByChannel = filteredData.categories;
@@ -39,12 +39,12 @@ function MainContainer() {
                         <li className='category-item' key={category.category_id}>
                             <SectionTitle text={category.category_name}/>
                             <ul className='meeting_note'>
-                                {category.meetings.map(meeting => (
-                                    <li key={meeting.meeting_id}>
+                                {category.meetingDTOList.map(meeting => (
+                                    <li key={meeting.meetingId}>
                                         <SectionLinkItem 
-                                            id={meeting.meeting_id}
-                                            text={meeting.meeting_name}
-                                            to={`/meeting/${meeting.meeting_id}`}
+                                            id={meeting.meetingId}
+                                            text={meeting.meetingTitle}
+                                            to={`/meeting/${meeting.meetingId}`}
                                         />
                                     </li>
                                 ))}
