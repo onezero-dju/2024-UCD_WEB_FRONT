@@ -100,3 +100,14 @@
     height: 100%;
     object-fit: cover;
 }
+
+.modal-temp{
+    width: 100%;
+    padding: 20px;
+}
+
+.modal-title{
+    padding-bottom: 20px;
+    font-size: 20px;
+    text-align: left;
+}

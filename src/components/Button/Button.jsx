@@ -5,11 +5,11 @@ import './Button.css'
 /**
  * 버튼 컴포넌트
  */
-export const Button = ({primary=false, type, size='medium', label='button'}) => {
+export const Button = ({primary=false, type, size='medium', label='button', onClick}) => {
   const mode = primary ? 'primary' : 'secondary';
 
   return (
-    <button className={['btn', mode, size].join(' ')} type={type}>{label}</button>
+    <button className={['btn', mode, size].join(' ')} type={type} onClick={onClick}>{label}</button>
   )
 }
 
@@ -22,4 +22,6 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
   /** 버튼 사이즈 지정 */
   size: PropTypes.oneOf(['medium', 'full']),
+  /** 클릭 핸들링 함수 */
+  onClick: PropTypes.func,
 };

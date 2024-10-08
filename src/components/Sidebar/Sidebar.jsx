@@ -1,13 +1,19 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { NavRectButton } from '../NavRectButton/NavRectButton';
 import { NavCirButton } from '../NavCirButton/NavCirButton';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
 import './Sidebar.css'
+import ProfileModal from '../ModalFrame/ModalFrame';
+import { Input } from '../Input/Input';
+import { Button } from '../Button/Button';
 
 function Sidebar() {
-
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [genChannelName, setGenChannelName] = useState('');
+  const [genChannelDisc, setGenChannelDisc] = useState('');
+  
   const {
     homeData,
     myName,
@@ -44,6 +50,22 @@ function Sidebar() {
         navigate('/main')
     }
 
+    // Chaanel 생성 함수
+    const handdleGenChannel = () => {
+        // 유효성 검사
+        if(!genChannelName) {alert('회의실 이름을 입력해주세요')}
+        else if(!genChannelDisc) {alert('회의실 설명을 작성해주세요')}
+        else {
+            // 데이터 통신 로직 추가
+            console.log(`채널명: ${genChannelName}`)
+            console.log(`채널 설명: ${genChannelDisc}`)
+            // 실패/성공 관련 메시지 출력
+            alert(`${genChannelName} 회의실을 생성하였습니다.`)
+            // 창 닫기            
+            setModalOpen(false)
+        }
+    }
+
     return (
         <div className='side'>
         <nav className='snb'>
@@ -75,19 +97,41 @@ function Sidebar() {
                                         <NavRectButton 
                                             dataId={0}
                                             label='+'
-                                            onClick={(e) => console.log('Add Channel')}
+                                            onClick={(e) => setModalOpen(true)}
                                         />
+                                        {isModalOpen && (<ProfileModal setModalOpen={setModalOpen}>
+                                            <div className='modal-temp'>
+                                                <h4 className='modal-title'>회의실 생성</h4>
+                                                <Input 
+                                                    type='text' id='gen-channel-name' label='회의실 이름'
+                                                    onChange={(e) => setGenChannelName(e.target.value)}
+                                                    required
+                                                />
+                                                <Input 
+                                                    type='text' id='gen-channel-disc' label='회의실 설명'
+                                                    onChange={(e) => setGenChannelDisc(e.target.value)}
+                                                    required
+                                                />
+                                                <Button 
+                                                    type='submit' label='생성하기' size='full' primary
+                                                    onClick={() => handdleGenChannel()}
+                                                />
+                                            </div>
+                                        </ProfileModal>
+                                        )}
                                     </li>
                                 </ul>
-                                </div>
+                                </div> 
                             )}
                         </li>
                     ))}
-                    <NavCirButton 
-                        dataId={0}
-                        label='+'
-                        onClick={console.log('Add Organization')}
-                    />
+                    <li>
+                        <NavCirButton 
+                            dataId={0}
+                            label='+'
+                            onClick={() => console.log('Add Organization')}
+                        />
+                    </li>   
                 </ul>
             </div>
         </nav>

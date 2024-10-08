@@ -24,11 +24,11 @@ const ProfileModal = ({
                             X
                         </span>
                         {/* 아래 임시 이미지 삽입 */}
-                        <img
+                        {/* <img
                             className='modal__poster-img'
                             src={`/logo512.png`}
                             alt="modal-img"
-                        />
+                        /> */}
                         {/* 아래에 모달에 담길 뷰 컴포넌트 */}
                         {children} 
                     </div>
