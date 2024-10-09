@@ -2,14 +2,19 @@ import {useCookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
-const useCheckLogin = () => {
-    const {cookies, setCookie} = useCookies(['token']);
+const useCheckLogin = (name) => {
+    const [cookies, setCookie, removeCookie] = useCookies([name]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(cookies === undefined) {
+        if (cookies[name]){
             navigate('/main');
         }
-    }, [cookies]);
+        else{
+            navigate('/login')
+        }
+    }, [cookies[name]]);
+
+    return [cookies, setCookie, removeCookie];
 }
 export default useCheckLogin;

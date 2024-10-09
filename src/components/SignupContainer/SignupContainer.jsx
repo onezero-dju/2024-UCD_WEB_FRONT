@@ -30,10 +30,10 @@ function SignupContainer() {
         // 암호화 및 전송 필요
         console.log("아이디:", id);
         console.log("비밀번호:", password2);
-
+        console.log(`${process.env.REACT_APP_API_URL}`);
         // 회원가입 요청 API 통신
         try{
-            const response = await axios.post('http://localhost:8080/api/users/signup',{
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/signup`,{
                 "username": userName,
                 "email": id,
                 "password": password1
@@ -43,7 +43,7 @@ function SignupContainer() {
                 navigate('/login')
             }
         }catch(error){
-            console.error("회원가입 실패")
+            console.error("회원가입 실패", error)
         }
     };
 
