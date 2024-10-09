@@ -43,10 +43,10 @@ export const useGetCategoryList = () => {
         try {
             setLoading(true); 
             setError(null);
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/channel/${channel_id}/meetings`,{
-                withCredentials: true, 
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/meetings/byChannel/${channel_id}`,{
+            // const response = await axios.get(`${process.env.REACT_APP_MEETING_API_URL}/api/meetings/byChannel/${channel_id}`,{
                 headers: {
-                    // 'Authorization': `Bearer ${cookies.token}`,
+                    'Authorization': `Bearer ${cookies.token}`,
                     'Content-Type': 'application/json',
                 },
             });
