@@ -47,13 +47,19 @@ function Sidebar() {
         const channelsByOrgId = homeData.organizations.filter(org => org.organization_id==id)[0].channels;
         setSelectedOrgId(id);
         setSelectedChannels(channelsByOrgId);
+
+        navigate('/main')
+    }
+
+    useEffect(()=>{
         if(selectedChannels.length > 0) {
             // 해당 조직의 첫번째 채널을 선택
+            const channelsByOrgId = homeData.organizations.filter(org => org.organization_id==selectedOrgId)[0].channels;
+
             const firstChannelId = channelsByOrgId[0].channel_id;
             setSelectedChannelId(firstChannelId);
         }
-        navigate('/main')
-    }
+    },[selectedOrgId])
 
     // Channel 클릭 시 실행
     const handleChannelClick = (e, id) => {
