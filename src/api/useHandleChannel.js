@@ -2,9 +2,9 @@ import axios from 'axios';
 import {useCookies} from "react-cookie";
 import { useState } from "react";
 
-export const useGenOrg = () => {
+export const useGenChannel = () => {
     const [cookies] = useCookies('token');
-    const [responseData, setOrgResponseData] = useState(null);
+    const [responseData, setResponse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -16,14 +16,15 @@ export const useGenOrg = () => {
         },
     };
 
-    const generateOrganization = async (data) => {
+    const fetchGenChannel = async (organization_id, data) => {
         try {
             setLoading(true); 
             setError(null);
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`, data, config);
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/channels`, data, config);
 
             if (response.status === 201) {
-                setOrgResponseData(response.data);
+                console.log("Channel created successfully:", response.data);
+                setResponse(response.data);
             } 
         } catch (error) {
             setError(error);
@@ -32,6 +33,6 @@ export const useGenOrg = () => {
         }
     };
   
-    return { responseData, loading, error,  generateOrganization};
+    return { responseData, loading, error,  fetchGenChannel};
   
 };

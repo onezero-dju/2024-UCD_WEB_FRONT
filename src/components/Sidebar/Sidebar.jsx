@@ -9,6 +9,7 @@ import ProfileModal from '../ModalFrame/ModalFrame';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
 import { useGenOrg } from '../../api/useHandleOrg';
+import { useGenChannel } from '../../api/useHandleChannel';
 
 function Sidebar() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -21,7 +22,8 @@ function Sidebar() {
   const [joinOrgID, setJoinOrgID] = useState('');
   const [joinOrgMsg, setJoinOrgMsg] = useState('');
   
-  const { data: genOrgResponse, loading, error, generateOrganization } = useGenOrg();
+  const { responseData: genOrgResponse, loading: genOrgLoading, error: genOrgError, generateOrganization } = useGenOrg();
+  const { responseData: genChannelResponse, loading: genChannelLoading, error: genChannelError, fetchGenChannel } = useGenChannel();
 
   const {
     homeData,
@@ -45,9 +47,11 @@ function Sidebar() {
         const channelsByOrgId = homeData.organizations.filter(org => org.organization_id==id)[0].channels;
         setSelectedOrgId(id);
         setSelectedChannels(channelsByOrgId);
-        // 해당 조직의 첫번째 채널을 선택
-        const firstChannelId = channelsByOrgId[0].channel_id;
-        setSelectedChannelId(firstChannelId);
+        if(selectedChannels.length > 0) {
+            // 해당 조직의 첫번째 채널을 선택
+            const firstChannelId = channelsByOrgId[0].channel_id;
+            setSelectedChannelId(firstChannelId);
+        }
         navigate('/main')
     }
 
@@ -65,33 +69,33 @@ function Sidebar() {
         if(!genOrgName) {alert('조직 이름을 입력해주세요'); return}
         else if(!genOrgDisc) {alert('조직 설명을 작성해주세요'); return}
         
-            // 데이터 통신 로직 추가
-            console.log(`조직명: ${genOrgName}`)
-            console.log(`조직 설명: ${genOrgDisc}`)
-            const data = {
-                "organization_name": genOrgName,
-                "description": genOrgDisc
-            };
-            
-            await generateOrganization(data);
-            console.log(genOrgResponse);
+        // 조직 생성
+        console.log(`조직명: ${genOrgName}`)
+        console.log(`조직 설명: ${genOrgDisc}`)
+        const data = {
+            "organization_name": genOrgName,
+            "description": genOrgDisc
+        };        
+        await generateOrganization(data);
 
     }
 
+    // genOrgResponse를 수신한 후 실행
     useEffect(() => {
-        console.log(`loading: ${loading}`);
-        console.log(`error: ${error}`);
+        console.log(`genOrgLoading: ${genOrgLoading}`);
+        console.log(`genOrgError: ${genOrgError}`);
         console.log(`genOrgResponse: ${genOrgResponse}`);
         
-        if (!loading && genOrgResponse) {
+        if (!genOrgLoading && genOrgResponse) {
             console.log("genOrgResponse:", genOrgResponse);
-            alert(`조직을 생성하였습니다.`);
-            setModalOpen(false);
-          } else if (!loading && error) {
-            console.error("Error:", error);
+            alert(`\'${genOrgResponse.data.organization_name}\' 조직을 생성하였습니다.`);
+            setAddOrgModalOpen(false);
+            window.location.reload();
+        } else if (!genOrgLoading && genOrgError) {
+            console.error("Error:", genOrgError);
             alert('다시 시도해주세요.');
-          }
-      }, [genOrgResponse, loading, error]);
+        }
+      }, [genOrgResponse, genOrgLoading, genOrgError]);
 
     // 사용자가 가입한 조직이 있는지 확인
     const checkOrgLength = () => {
@@ -101,21 +105,38 @@ function Sidebar() {
         }
     }
 
-    // Chaanel 생성 함수
-    const handdleGenChannel = () => {
+    // 채널 생성
+    const handdleGenChannel = async () => {
         // 유효성 검사
-        if(!genChannelName) {alert('회의실 이름을 입력해주세요')}
-        else if(!genChannelDisc) {alert('회의실 설명을 작성해주세요')}
-        else {
-            // 데이터 통신 로직 추가
-            console.log(`채널명: ${genChannelName}`)
-            console.log(`채널 설명: ${genChannelDisc}`)
-            // 실패/성공 관련 메시지 출력
-            alert(`${genChannelName} 회의실을 생성하였습니다.`)
-            // 창 닫기            
-            setModalOpen(false)
+        if(!genChannelName) {alert('회의실 이름을 입력해주세요'); return}
+        else if(!genChannelDisc) {alert('회의실 설명을 작성해주세요'); return}
+        
+        // 채널 생성
+        console.log(`채널명: ${genChannelName}`)
+        console.log(`채널 설명: ${genChannelDisc}`)
+        const data = {
+            "name": genChannelName,
+            "description": genChannelDisc
         }
-    }
+        await fetchGenChannel(selectedOrgId, data);
+    };
+
+    // genChannelResponse 수신한 후 실행
+    useEffect(() => {
+        console.log(`genChannelLoading: ${genChannelLoading}`);
+        console.log(`genChannelError: ${genChannelError}`);
+        console.log(`genChannelResponse: ${genChannelResponse}`);
+        
+        if (!genChannelLoading && genChannelResponse) {
+            console.log("genChannelResponse:", genChannelResponse);
+            alert(`\'${genChannelResponse.data.name}\' 채널을 생성하였습니다.`);
+            setModalOpen(false);
+            window.location.reload();
+        } else if (!genChannelLoading && genChannelError) {
+            console.error("Error:", genChannelError);
+            alert('다시 시도해주세요.');
+        }
+    }, [genChannelResponse, genChannelLoading, genChannelError]);
 
     // 조직 가입 요청
     const RequestJoinOrg = () => {
