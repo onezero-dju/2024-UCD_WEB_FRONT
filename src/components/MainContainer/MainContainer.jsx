@@ -11,7 +11,14 @@ import ProfileModal from '../ModalFrame/ModalFrame';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
 
+import axios from "axios";
+import useCheckLogin from "../../hooks/useCheckLogin";
+
 function MainContainer() {
+    const [filteredData, setFilteredData] = useState('');
+    // const [cookies, setCookies] = useCheckLogin('token');
+
+    // selectedChannelId를 기반으로 categories, meetings data 요청
     const { selectedChannelId } = useContext(HomeDataContext);
     const [options, setOptions] = useState([]);
     const [genCategoryName, setGenCategoryName] = useState(null);
@@ -147,6 +154,27 @@ function MainContainer() {
     if (getCategoriesError) {
         return <div>Error: {getCategoriesError.message}</div>;
     }
+
+    //
+    // useEffect(() => {
+    //     const fetching = async () => {
+    //         try {
+    //             const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`, {
+    //                 "organization_name": "Test 9583",
+    //                 "description": "It is Test 9583"
+    //             },{
+    //                 headers:{
+    //                     'Authorization': `Bearer ${cookies['token']}`,
+    //                     'Content-Type': 'application/json',
+    //                 }
+    //             })
+    //             console.log("post 성공:", res)
+    //         } catch(error){
+    //             console.log("post 실패:", error)
+    //         }
+    //     }
+    //     fetching();
+    // }, []);
 
     return (
         <main className='main-wrap'>
