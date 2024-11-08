@@ -12,7 +12,9 @@ export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie] = useCookies(['token']);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [organizationId, setOrganizationId] = useState("");
+    const [message, setMessage] = useState(""); 
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -59,6 +61,7 @@ export default function LoginContainer() {
         try{
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organization/my`, {
                 headers: {
+                    "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
             });
@@ -78,6 +81,37 @@ export default function LoginContainer() {
         }
     }
 
+    const handleJoinOrganization = async (event) => {
+        event.preventDefault();
+
+        if (!organizationId || !message) {
+            alert("조직 ID와 메시지를 모두 입력해주세요.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organizationId}/join`, {
+                message: message,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${cookies.token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                alert("조직 가입 신청이 성공했습니다.");
+                setIsModalOpen(false); // Close the modal after successful submission
+            } else {
+                alert("조직 가입 신청에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error('조직 가입 신청 에러', error);
+            alert("조직 가입 신청에 실패했습니다.");
+        }
+    };
+
+
     return (
         <main className='login-container'>
             <form className='login-field' onSubmit={handleSubmit}>
@@ -93,13 +127,29 @@ export default function LoginContainer() {
                 />
                 <Button type='submit' label='로그인' size='full' primary/>
             </form>
-            {isModalOpen ?
-            <ModalFrame>
-                {/*조직 생성과 조직 신청 모달창*/}
-                <div>
-                    굿!
-                </div>
-            </ModalFrame>:<></>}
+            {/* 아래는 조직 가입 신청 모달창 */}
+            {isModalOpen &&
+            <ModalFrame setModalOpen={setIsModalOpen}>
+                <form onSubmit={handleJoinOrganization}>
+                    <h3>조직 가입 신청</h3>
+                    <Input 
+                        type='text' 
+                        id='organizationId' 
+                        label='조직 ID' 
+                        onChange={(e) => setOrganizationId(e.target.value)} 
+                        required 
+                    />
+                    <Input 
+                        type='text' 
+                        id='message' 
+                        label='가입 신청 메시지' 
+                        onChange={(e) => setMessage(e.target.value)} 
+                        required
+                    />
+                    <Button type='submit' label='가입 신청' size='full' />
+                </form>
+            </ModalFrame>}
+
             <div className='signup-box'>
                 <Link to="/signup" className='text-href'>회원가입 &gt;</Link>
             </div>
