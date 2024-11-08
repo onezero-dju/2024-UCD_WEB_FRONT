@@ -50,7 +50,7 @@ export default function LoginContainer() {
 
   const checkUserOrganization = async (token) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organization/my`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organizations/my`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
