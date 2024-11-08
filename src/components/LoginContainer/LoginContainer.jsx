@@ -12,7 +12,7 @@ export default function LoginContainer() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [cookies, setCookie] = useCookies(['token']);
-    const [isModalOpen, setIsModalOpen] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -38,7 +38,7 @@ export default function LoginContainer() {
             if(response.data.code === 200){
                 alert("로그인이 성공하였습니다");
                 setCookie('token', response.data.token);
-                checkUserOrganization(response.data.token);
+                checkUserOrganization(cookies.token);
                 // console.log(cookies['token']);
             }else{
                 alert("로그인이 실패하였습니다");
@@ -57,7 +57,7 @@ export default function LoginContainer() {
 
     const checkUserOrganization = async(token) => {
         try{
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organization/my`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,8 +68,13 @@ export default function LoginContainer() {
             else{
                 setIsModalOpen(true);
             }
-        }catch{
-
+        }catch (error){
+            if (error.response && error.response.status === 403) {
+                alert("이 리소스에 대한 권한이 없습니다.");
+            } else {
+                console.error('조직 확인 에러', error);
+                alert("조직 정보를 불러오는 데 실패했습니다.");
+            }
         }
     }
 
