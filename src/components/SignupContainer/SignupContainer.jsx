@@ -43,7 +43,9 @@ function SignupContainer() {
                 navigate('/login')
             }
         }catch(error){
-            console.error("회원가입 실패", error)
+            if (error.response.data.code === 409) {
+                alert(error.response.data.message);
+            }
         }
     };
 
