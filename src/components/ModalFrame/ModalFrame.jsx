@@ -3,7 +3,7 @@ import './ModalFrame.css'
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 import {createPortal} from "react-dom";
 
-const ProfileModal = ({
+const ModalFrame = ({
         setModalOpen,
         children
     }) => {
@@ -35,4 +35,4 @@ const ProfileModal = ({
     )
 }
 
-export default ProfileModal
+export default ModalFrame
