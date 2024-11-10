@@ -11,7 +11,7 @@ export default function LoginContainer() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [cookies, setCookie] = useCookies(['token']);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [organizationId, setOrganizationId] = useState('');
   const [message, setMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -34,7 +34,8 @@ export default function LoginContainer() {
       if (response.data.code === 200) {
         alert('로그인이 성공하였습니다');
         setCookie('token', response.data.token);
-        checkUserOrganization(response.data.token);
+        // checkUserOrganization(response.data.token);
+        navigate('/main')
       } else {
         alert('로그인이 실패하였습니다');
       }
@@ -56,8 +57,9 @@ export default function LoginContainer() {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.data) {
+      if (response.data.data.length > 0) {
         navigate('/main');
+        console.log("가입된 조직이 있어서 메인으로 이동합니다.")
       } else {
         setIsModalOpen(true);
       }
@@ -89,30 +91,7 @@ export default function LoginContainer() {
           },
         }
       );
-			response.data = {
-				"code": 200,
-				"message": "success",
-				"data": [
-						{
-								"organization_id": 3,
-								"organization_name": "한화이글스",
-								"description": "hi",
-								"created_at": "2024-09-12T10:31:35.770401"
-						},
-						{
-								"organization_id": 5,
-								"organization_name": "스티브",
-								"description": "steve",
-								"created_at": "2024-09-21T09:03:29.016079"
-						},
-						{
-								"organization_id": 7,
-								"organization_name": "테니스",
-								"description": "steve",
-								"created_at": "2024-09-25T05:11:19.946418"
-						}
-				]
-			}
+
       if (response.data.code === 200) {
         setSearchResults(response.data.data);
       } else {
@@ -121,7 +100,7 @@ export default function LoginContainer() {
       }
     } catch (error) {
       console.error('조직 검색 에러', error);
-      alert('조직 검색에 실패했습니다.');
+      alert('조직 검색에 실패했습니다!');
     }
   };
 
