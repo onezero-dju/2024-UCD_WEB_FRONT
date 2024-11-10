@@ -100,7 +100,7 @@ function Sidebar() {
                 </div>
             </div>
             <div className='settings'>
-            <img src='/assets/icons/settings.png'/>
+                <img src='/assets/icons/settings.png'/>
             </div>
         </div>
         </div>
