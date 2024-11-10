@@ -29,8 +29,6 @@ function MainContainer() {
                 </div>
                 <div className='toolbar'>
                     <SignOutButton/>
-                    <div className='add-note'></div>
-                    <div className='add-category'></div>
                 </div>
             </div>
             <div className='category-wrap'>

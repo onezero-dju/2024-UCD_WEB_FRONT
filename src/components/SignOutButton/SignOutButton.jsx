@@ -14,7 +14,9 @@ const SignOutButton = () => {
 
     return(
         <>
-            <button className="logout-wrapper" onClick={handleSignOut}/>
+            <button className="logout-wrapper" onClick={handleSignOut}>
+                <img src='/assets/icons/logout.png' alt='Logout Button'/>
+            </button>
         </>
     )
 }
