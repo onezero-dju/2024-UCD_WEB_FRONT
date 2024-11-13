@@ -33,20 +33,54 @@ const temp_response = {
     ]
 };
 
-export const useGetCategoryList = () => {
+// 회의 생성
+export const useGenMeeting = () => {
     const [cookies] = useCookies('token');
     const [responseData, setResponse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchGetCategoryList = async (channel_id) => {
+    const config = {
+        headers: {
+            'Authorization': `Bearer ${cookies.token}`,
+            'Content-Type': 'application/json',
+        },
+    };
+
+    const fetchGenMeeting = async (data) => {
         try {
             setLoading(true); 
             setError(null);
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/channel/${channel_id}/meetings`,{
-                withCredentials: true, 
+            const response = await axios.post(`${process.env.REACT_APP_MEETING_API_URL}/api/meetings/create`, data, config);
+            console.log(response);
+            if (response.status === 201) {
+                console.log("Meeting generated successfully:", response.data);
+                setResponse(response.data);
+            } 
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+  
+    return { responseData, loading, error, fetchGenMeeting};
+  
+};
+
+export const useGetMeetingList = () => {
+    const [cookies] = useCookies('token');
+    const [responseData, setResponse] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const fetchGetMeetingList = async (channel_id) => {
+        try {
+            setLoading(true); 
+            setError(null);
+            const response = await axios.get(`${process.env.REACT_APP_MEETING_API_URL}/api/meetings/by_channel/${channel_id}`,{
                 headers: {
-                    // 'Authorization': `Bearer ${cookies.token}`,
+                    'Authorization': `Bearer ${cookies.token}`,
                     'Content-Type': 'application/json',
                 },
             });
@@ -56,8 +90,6 @@ export const useGetCategoryList = () => {
                 setResponse(response.data);
             } 
         } catch (error) {
-            // 403 에러 커스텀 처리
-            // 추후 수정 필요
             if (error.response && error.response.status === 403) {
                 console.log('403 error occurred');
                 setResponse(temp_response);
@@ -69,6 +101,6 @@ export const useGetCategoryList = () => {
         }
     };
   
-    return { responseData, loading, error, fetchGetCategoryList};
+    return { responseData, loading, error, fetchGetMeetingList};
   
 };
