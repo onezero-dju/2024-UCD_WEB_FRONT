@@ -4,22 +4,15 @@ import { SectionTitle } from '../SectionTitle/SectionTitle';
 import { SectionLinkItem } from '../SectionLinkItem/SectionLinkItem';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
 import SignOutButton from "../SignOutButton/SignOutButton";
-import './MainContainer.css'
-import { useGetCategoryList } from '../../api/useHanddleMeeting';
+import { useGenMeeting, useGetMeetingList } from '../../api/useHanddleMeeting';
 import { useGenCategory, useGetCategories } from '../../api/useHandleCategory';
 import ProfileModal from '../ModalFrame/ModalFrame';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
-
-import axios from "axios";
-import useCheckLogin from "../../hooks/useCheckLogin";
+import './MainContainer.css';
 
 function MainContainer() {
-    const [filteredData, setFilteredData] = useState('');
-    // const [cookies, setCookies] = useCheckLogin('token');
-
-    // selectedChannelId를 기반으로 categories, meetings data 요청
-    const { selectedChannelId } = useContext(HomeDataContext);
+    const { selectedChannelId, selectedChannelName } = useContext(HomeDataContext);
     const [options, setOptions] = useState([]);
     const [genCategoryName, setGenCategoryName] = useState(null);
     const [genMeetingName, setGenMeetingName] = useState(null);
@@ -27,9 +20,10 @@ function MainContainer() {
     const [genMeetingAgenda, setGenMeetingAgenda] = useState(null);
     const [isGenCategorySectionOpen, setGenCategorySectionOpen] = useState(false);
     const [isGenMeetingSectionOpen, setGenMeetingSectionOpen] = useState(false);
-    const { responseData: mainData, loading: getCategoriesLoading, error: getCategoriesError, fetchGetCategoryList } = useGetCategoryList();
+    const { responseData: mainData, loading: getMeetingLoading, error: getMeetingError, fetchGetMeetingList } = useGetMeetingList();
     const { responseData: genCategoryResponse, loading: genCategoryLoading, error: genCategoryError, fetchGenCategory } = useGenCategory();
     const { responseData: getCategoryResponse, loading: getCategoryLoading, error: getCategoryError, fetchGetCategory } = useGetCategories();
+    const { responseData: genMeetingResponse, loading: genMeetingLoading, error: genMeetingError, fetchGenMeeting } = useGenMeeting();
  
     // 드롭다운 메뉴 커스텀
     // 추후 컴포넌트화 필요
@@ -96,7 +90,7 @@ function MainContainer() {
     };
 
     useEffect(()=>{
-        fetchGetCategoryList(selectedChannelId);
+        fetchGetMeetingList(selectedChannelId);
     }, [selectedChannelId])
     
     useEffect(()=>{
@@ -112,7 +106,7 @@ function MainContainer() {
     useEffect(()=>{
         console.log(getCategoryResponse)
         if (!getCategoryLoading && getCategoryResponse) {
-            const optionList = getCategoryResponse.map(item => ({ value: item.name, label: item.name }));
+            const optionList = getCategoryResponse.map(item => ({ id:item.category_id, value: item.name, label: item.name }));
             console.log(optionList)
             setOptions(optionList);
         }
@@ -129,13 +123,30 @@ function MainContainer() {
             console.log("genCategoryResponse:", genCategoryResponse);
             alert(`\'${genCategoryResponse.data.name}\' 채널을 생성하였습니다.`);
             setGenCategorySectionOpen(false);
-            // window.location.reload();
+            fetchGetMeetingList(selectedChannelId);
         } else if (!genCategoryLoading && genCategoryError) {
             console.error("Error:", genCategoryError);
             alert('다시 시도해주세요.');
         }
     }, [genCategoryResponse, genCategoryLoading, genCategoryError]);
         
+    // genMeetingResponse 수신한 후 실행
+    useEffect(() => {
+        console.log(`genMeetingLoading: ${genMeetingLoading}`);
+        console.log(`genMeetingError: ${genMeetingError}`);
+        console.log(`genMeetingResponse: ${genMeetingResponse}`);
+        
+        if (!genMeetingLoading && genMeetingResponse) {
+            console.log("genMeetingResponse:", genMeetingResponse);
+            alert(`\'${genMeetingResponse.meeting_title}\' 회의를 생성하였습니다.`);
+            setGenCategorySectionOpen(false);
+            fetchGetMeetingList(selectedChannelId);
+        } else if (!genMeetingLoading && genMeetingError) {
+            console.error("Error:", genMeetingError);
+            alert('다시 시도해주세요.');
+        }
+    }, [genMeetingResponse, genMeetingLoading, genMeetingError]);
+      
     // 카테고리 생성
     const handleGenCategory = async () => {
         // 유효성 검사
@@ -148,40 +159,43 @@ function MainContainer() {
         await fetchGenCategory(data, selectedChannelId);
     };
 
-    if (getCategoriesLoading) {
-        return <div>Loading...</div>;
-    }
-    if (getCategoriesError) {
-        return <div>Error: {getCategoriesError.message}</div>;
+    // 회의 생성
+    const handleGenMeeting = async () => {
+        // 유효성 검사
+        if(!genMeetingName) {alert('회의 이름을 입력해주세요'); return}
+        if(!genMeetingCategory) {alert('카테고리를 선택해주세요'); return}
+        if(!genMeetingAgenda) {alert('안건을 입력해주세요'); return}
+
+        console.log(`회의명: ${genMeetingName}`)
+        console.log(`카테고리명: ${genMeetingCategory.value}`)
+        console.log(`안건: ${genMeetingAgenda}`)
+
+        const data = {
+            "meeting_title": genMeetingName,
+            "channel_id": selectedChannelId,
+            "channel_name": selectedChannelName,
+            "category_id": genMeetingCategory.id,
+            "category_name": genMeetingCategory.value, 
+            "agenda": genMeetingAgenda
+          }
+
+        console.log(data);
+
+        await fetchGenMeeting(data);   
     }
 
-    //
-    // useEffect(() => {
-    //     const fetching = async () => {
-    //         try {
-    //             const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`, {
-    //                 "organization_name": "Test 9583",
-    //                 "description": "It is Test 9583"
-    //             },{
-    //                 headers:{
-    //                     'Authorization': `Bearer ${cookies['token']}`,
-    //                     'Content-Type': 'application/json',
-    //                 }
-    //             })
-    //             console.log("post 성공:", res)
-    //         } catch(error){
-    //             console.log("post 실패:", error)
-    //         }
-    //     }
-    //     fetching();
-    // }, []);
+    if (getMeetingLoading) {
+        return <div>Loading...</div>;
+    }
+    if (getMeetingError) {
+        return <div>Error: {getMeetingError.message}</div>;
+    }
 
     return (
         <main className='main-wrap'>
             <div className='title-container'>
                 <div className='chanel_title'>
-                    {/* <h3>{mainData && mainData.channel_name && mainData.channel_name}</h3> */}
-                    <h3>ChannelName</h3>
+                    <h3>{selectedChannelName}</h3>
                 </div>
                 <div className='toolbar'>
                     <SignOutButton/>
@@ -211,6 +225,7 @@ function MainContainer() {
                                     placeholder="상위 카테고리 선택"
                                     maxMenuHeight={90}
                                     menuPlacement="auto"
+                                    onChange={setGenMeetingCategory} 
                                 />
                             </div>
                             <Input 
@@ -225,7 +240,7 @@ function MainContainer() {
                             />
                             <Button 
                                 type='submit' label='생성하기' size='full' primary
-                                onClick={() => console.log('add meeting')}
+                                onClick={() => handleGenMeeting()}
                             />
                         </div>     
                     </ProfileModal>}
@@ -233,28 +248,35 @@ function MainContainer() {
             </div>
             <div className='category-wrap'>
                 <ul className='category'>
-                    {mainData && mainData.data.map(category => (
-                        <li className='category-item' key={category.category_id}>
-                            <SectionTitle text={category.category_name}/>
-                            <ul className='meeting_note'>
-                                {category.meetingDTOList.map(meeting => (
-                                    <li key={meeting.meetingId}>
+                    {mainData && mainData.length === 0 ? (
+                        <p>카테고리 또는 회의가 비어있습니다. <br/> 우측 상단의 아이콘을 눌러 카테고리를 생성해보세요!</p>
+                    ): mainData && mainData.length > 0 ? (
+                        mainData.map(category => (
+                            <li className='category-item' key={category.category_id}>
+                                <SectionTitle text={category.category_name}/>
+                                <ul className='meeting_note'>
+                                    {category.meeting_dtolist.map(meeting => (
+                                        <li key={meeting.meeting_id}>
+                                            <SectionLinkItem 
+                                                id={meeting.meeting_id}
+                                                text={meeting.meeting_title}
+                                                to={`/meeting/${meeting.meeting_id}`}
+                                            />
+                                        </li>
+                                    ))}
+                                    {/* 미팅리스트 마지막에 + 추가 */}
+                                    {/* <li key='0'>
                                         <SectionLinkItem 
-                                            id={meeting.meetingId}
-                                            text={meeting.meetingTitle}
-                                            to={`/meeting/${meeting.meetingId}`}
+                                            id='0'
+                                            text='+'
                                         />
-                                    </li>
-                                ))}
-                                <li key='0'>
-                                    <SectionLinkItem 
-                                        id='0'
-                                        text='+'
-                                    />
-                                </li>
-                            </ul>
-                        </li>
-                    ))}
+                                    </li> */}
+                                </ul>
+                            </li>
+                        ))    
+                    ):(
+                        <p>No items available.</p>
+                    )}
                 </ul>
             </div>
         </main>

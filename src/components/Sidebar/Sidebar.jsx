@@ -4,12 +4,12 @@ import { NavRectButton } from '../NavRectButton/NavRectButton';
 import { NavCirButton } from '../NavCirButton/NavCirButton';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
-import './Sidebar.css'
 import ProfileModal from '../ModalFrame/ModalFrame';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
 import { useGenOrg } from '../../api/useHandleOrg';
 import { useGenChannel } from '../../api/useHandleChannel';
+import './Sidebar.css'
 
 function Sidebar() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -35,6 +35,7 @@ function Sidebar() {
     selectedChannels,
     setSelectedOrgId,
     setSelectedChannelId,
+    setSelectedChannelName,
     setSelectedOrgs,
     setSelectedChannels,
   } = useContext(HomeDataContext);
@@ -55,17 +56,19 @@ function Sidebar() {
         if(selectedChannels.length > 0) {
             // 해당 조직의 첫번째 채널을 선택
             const channelsByOrgId = homeData.organizations.filter(org => org.organization_id==selectedOrgId)[0].channels;
-
             const firstChannelId = channelsByOrgId[0].channel_id;
+            const firstChannelName = channelsByOrgId[0].name;
             setSelectedChannelId(firstChannelId);
+            setSelectedChannelName(firstChannelName);
         }
     },[selectedOrgId])
 
     // Channel 클릭 시 실행
-    const handleChannelClick = (e, id) => {
+    const handleChannelClick = (e, id, name) => {
         // 이벤트 버블링 중단
         e.stopPropagation(); 
         setSelectedChannelId(id);
+        setSelectedChannelName(name);
         navigate('/main')
     }
 
@@ -188,7 +191,7 @@ function Sidebar() {
                                             dataId={channel.channel_id}
                                             selectedId={selectedChannelId}
                                             label={channel.name}
-                                            onClick={(e) => handleChannelClick(e, channel.channel_id)}
+                                            onClick={(e) => handleChannelClick(e, channel.channel_id, channel.name)}
                                         />
                                     </li>
                                     ))}
