@@ -9,6 +9,7 @@ export const HomeDataProvider = ({ children }) =>  {
 
   const [selectedOrgId, setSelectedOrgId] = useState(null);
   const [selectedChannelId, setSelectedChannelId] = useState(null);
+  const [selectedChannelName, setSelectedChannelName] = useState(null);
   const [selectedOrgs, setSelectedOrgs] = useState([]);
   const [selectedChannels, setSelectedChannels] = useState([]);
   const [myName, setMyName] = useState('');
@@ -22,6 +23,7 @@ export const HomeDataProvider = ({ children }) =>  {
 
       if(homeData.organizations[0].channels.length > 0){
         setSelectedChannelId(homeData.organizations[0].channels[0].channel_id);
+        setSelectedChannelName(homeData.organizations[0].channels[0].name);
         setSelectedChannels(homeData.organizations[0].channels);
       }
 
@@ -43,10 +45,12 @@ export const HomeDataProvider = ({ children }) =>  {
         myRole,
         selectedOrgId,
         selectedChannelId,
+        selectedChannelName,
         selectedOrgs,
         selectedChannels,
         setSelectedOrgId,
         setSelectedChannelId,
+        setSelectedChannelName,
         setSelectedOrgs,
         setSelectedChannels,
       }}
