@@ -24,7 +24,7 @@ function MainContainer() {
     
     const { responseData: mainData, loading: getCategoriesLoading, error: getCategoriesError, fetchGetCategoryList } = useGetCategoryList();
     const { responseData: genCategoryResponse, loading: genCategoryLoading, error: genCategoryError, fetchGenCategory } = useGenCategory();
- 
+
     useEffect(()=>{
         fetchGetCategoryList(selectedChannelId);
     }, [selectedChannelId])

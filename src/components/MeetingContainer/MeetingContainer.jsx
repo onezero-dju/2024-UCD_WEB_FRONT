@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import './MeetingContainer.css'
+import Editor from '../Editor/Editor';
+import {WebsocketProvider} from 'y-websocket'
+import * as Y from 'yjs'
+import { useHomeData } from '../../api/useHomeData.jsx';
 
 function MeetingContainer() {
-    const { meetingId } = useParams();
-
+  const { meetingId } = useParams();
+  let homedata = useHomeData();
+    // const [userList, setUserList] = useState([]);
     // 임시 데이터
     const responseData = [
         { meetingId: 1001, meetingName: "Monthly Update" },
@@ -68,7 +73,7 @@ function MeetingContainer() {
         { meetingId: 10004, meetingName: "Cost Optimization Strategies" },
         { meetingId: 10005, meetingName: "Expense Report Review" }
     ];
-        
+    
     // Meeting ID에 따른 데이터 필터링
     // 추후 아래 코드는 API 설계 후 수정 필요
     const meeting = responseData.find(item => item.meetingId.toString() === meetingId);
@@ -80,23 +85,13 @@ function MeetingContainer() {
     return (
         <section className='meeting-container'>
             <div className='meeting_title'>
-                <h3>{meeting.meetingName}</h3>
-                <ul className='participants'>
-                <li>
-                    <ProfileImage name="김지우" size='large'/>
-                </li>
-                <li>
-                    <ProfileImage name="Emily Johnson" size='large'/> 
-                </li>
-                <li>
-                    <ProfileImage name="이민서" size='large'/>
-                </li>
-                <li>
-                    <ProfileImage name="Ethan Parker" size='large'/>
-                </li>
-                </ul>
+              <h3>{meeting.meetingName}</h3>
             </div>
-            <div className='realtime_space'></div>
+            <div className='realtime_space'>
+              <div className='editor-container'>
+                <Editor username={homedata?.user?.username}/>
+              </div>
+            </div>
         </section>
     )
 }

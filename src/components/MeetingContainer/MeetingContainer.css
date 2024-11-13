@@ -1,10 +1,14 @@
 .meeting-container{
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
     flex: 1;
     padding: 8px 16px;
     box-sizing: border-box;
+
+    display: grid;
+    grid-template-rows: 100px 1fr;
+    width: 100%;
 }
 
 .meeting_title {
@@ -36,6 +40,9 @@
 .realtime_space{
     flex: 1;
     box-sizing: border-box;
-    border-radius: 20px;
-    border: 1px solid #ababab;
+    /* border-radius: 20px; */
+    /* border: 1px solid #ababab; */
+    position: relative;
+    overflow: hidden;
+    display: flex;justify-content: center;
 }
