@@ -23,6 +23,7 @@
   --gray : #dbdbdb;
   --white : #f7f7f7;
   --lightBlue : #6698f5;
+  --lightBlueTrans : #6698f580;
   --purple: #2f2ff2;
 }
 
@@ -100,6 +101,38 @@
 }
 
 
+.bubble-menu{
+  background: #fff;
+  box-shadow: 0 1px 5px 0 #d9d8d8;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.bubble-menu-button{
+  border-radius: 8px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;align-items: center;justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.bubble-menu-button.tableButton{
+  color: var(--lightBlue);
+}
+.bubble-menu-button.deleteTable{
+  color: #f03434;
+}
+.bubble-menu-button.is-active{
+  background: #d9d8d8;
+}
+.bubble-menu-button.is-active:hover{
+  background: #d9d8d8;
+}
+.bubble-menu-button:hover{
+  background: #efefef;
+}
+
 
 /* quote */
 blockquote {
@@ -108,6 +141,7 @@ blockquote {
   padding-left: 1rem;
 }
 /* ListItem */
+
 ul, 
 ol {
   padding: 0 1rem;
@@ -351,10 +385,18 @@ img.ProseMirror-selectednode {
   background: white;
   color: rgba(black, 0.8);
   overflow: hidden;
-  font-size: 0.9rem;
+  font-size: 1rem;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.1);
-}
+  padding: 5px;
 
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 5px;
+}
+.item>svg{
+  font-size: 1.1rem;
+  margin-right: 5px;
+}
 .item {
   display: block;
   width: 100%;
@@ -362,12 +404,16 @@ img.ProseMirror-selectednode {
   background: transparent;
   border: none;
   padding: 0.2rem 0.5rem;
+  display: flex;align-items: center;
+  line-height: 1rem;
 }
+
 
 .item.is-selected,
 .item:hover {
-  color: #a975ff;
-  background: rgba(#a975ff, 0.1);
+  color: #6698f5;
+  background: #f7f7f7;
+  font-weight: 600;
 }
 
 
@@ -2689,16 +2735,11 @@ input[type=range]::-webkit-slider-thumb:active {
 }
 
 .ProseMirror code {
-  border-radius: .125rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(23 23 23/var(--tw-bg-opacity));
+  border-radius: .4rem;
+  font-size: 0.85rem;
   font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255/var(--tw-text-opacity));
-  caret-color: #fff;
-  --tw-shadow: 0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);
-  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)
+  background-color: var(--lightBlueTrans);
+  padding: 0.25em 0.3em;
 }
 
 .ProseMirror code::-moz-selection {

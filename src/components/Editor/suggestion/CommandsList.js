@@ -1,6 +1,34 @@
 import React, { Component } from "react";
+import { LuHeading1, LuHeading2 } from "react-icons/lu";
+
+import { PiTextHOneBold, PiTextHTwoBold, PiTextTBold, PiTableBold, PiCodeBold, PiCheckSquareBold } from "react-icons/pi";
 
 class CommandList extends Component {
+  setIcon(value){
+    switch (value) {
+      case "H1":
+        return <PiTextHOneBold/>;
+    
+      case "H2":
+        return <PiTextHTwoBold/>;
+    
+      case "Text":
+        return <PiTextTBold/>;
+    
+      case "Table":
+        return <PiTableBold/>;
+    
+      case "CodeBlock":
+        return <PiCodeBold/>;
+    
+      case "Task":
+        return <PiCheckSquareBold/>;
+    
+      default:
+        break;
+    }
+  }
+
   state = {
     selectedIndex: 0
   };
@@ -71,6 +99,7 @@ class CommandList extends Component {
               key={index}
               onClick={() => this.selectItem(index)}
             >
+              {this.setIcon(item.title)}
               {item.element || item.title}
             </button>
           );

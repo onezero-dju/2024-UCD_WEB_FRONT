@@ -4,8 +4,9 @@ import axios from 'axios';
 
 import { EventSourcePolyfill } from 'event-source-polyfill';
 
-import { ProfileImage } from '../ProfileImage/ProfileImage';
+import { ProfileImage } from '../ProfileImage/ProfileImage.jsx';
 
+import { Tooltip } from 'react-tooltip'
 
 // TipTap extension
 // StarterKit
@@ -75,6 +76,14 @@ import TaskList from '@tiptap/extension-task-list'
 
 @tiptap-pro/extension-unique-id
 */
+
+
+// import { FaBold, FaItalic, FaStrikethrough } from "react-icons/fa";
+import { RiBold, RiItalic, RiStrikethrough, RiInsertColumnLeft, RiInsertColumnRight, RiDeleteColumn, RiInsertRowBottom, RiInsertRowTop, RiDeleteRow, RiMergeCellsHorizontal, RiSplitCellsHorizontal} from "react-icons/ri";
+
+import { TbTableOff } from "react-icons/tb";
+
+
 
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
@@ -179,7 +188,8 @@ awareness.on('change', changes => {
   // we log all awareness information from all users.
   console.log(Array.from(awareness.getStates().values()))
 })
-export default (props) => {
+
+const EditorContainer = (props) => {
   const [items, setItems] = useState([])
   awareness.setLocalStateField('user', {
     // Define a print name that should be displayed
@@ -585,6 +595,7 @@ export default (props) => {
         <MenuBar editor={editor}/>
         
       </div> */}
+      
       <ul className='participants'>
         {
           Array.from(awareness.getStates().values())?.map((it, idx)=>{
@@ -607,39 +618,108 @@ export default (props) => {
           </div>
         </div>
       </div> */}
-
+      
       <>
         {editor && <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
-          <button
+          <div
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive('bold') ? 'is-active' : ''}
+            className={`bubble-menu-button bold ${editor.isActive('bold') ? 'is-active' : ''}`}
           >
-            Bold
-          </button>
-          <button
+            {/* Bold */}
+            <RiBold/>
+            <Tooltip anchorSelect=".bubble-menu-button.bold" place="top">
+              Bold
+            </Tooltip>
+          </div>
+          <div
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive('italic') ? 'is-active' : ''}
+            className={`bubble-menu-button italic ${editor.isActive('italic') ? 'is-active' : ''}`}
           >
-            Italic
-          </button>
-          <button
+            {/* Italic */}
+            <RiItalic/>
+            <Tooltip anchorSelect=".bubble-menu-button.italic" place="top">
+              Italic
+            </Tooltip>
+          </div>
+          <div
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={editor.isActive('strike') ? 'is-active' : ''}
+            className={`bubble-menu-button strike ${editor.isActive('strike') ? 'is-active' : ''}`}
           >
-            Strike
-          </button>
+            {/* Strike */}
+            <RiStrikethrough/>
+            <Tooltip anchorSelect=".bubble-menu-button.strike" place="top">
+              Strike
+            </Tooltip>
+          </div>
           {
             editor.isActive('table')&&<>
-              <button onClick={() =>{editor.chain().focus().addColumnBefore().run()}}>열 이전 추가</button>
-              <button onClick={() => editor.chain().focus().addColumnAfter().run()}>열 이후 추가</button>
-              <button onClick={() => editor.chain().focus().deleteColumn().run()}>열 삭제</button>
-              <button onClick={() => editor.chain().focus().addRowBefore().run()}>행 이전 추가</button>
-              <button onClick={() => editor.chain().focus().addRowAfter().run()}>행 이후 추가</button>
-              <button onClick={() => editor.chain().focus().deleteRow().run()}>행 삭제</button>
-              <button onClick={() => editor.chain().focus().deleteTable().run()}>표 삭제</button>
-              <button onClick={() => editor.chain().focus().mergeCells().run()}>셀 병합</button>
-              <button onClick={() => editor.chain().focus().splitCell().run()}>셀 분할</button>
-              <button onClick={() => editor.chain().focus().mergeOrSplit().run()}>Merge or split</button>
+              <div className={`bubble-menu-button insertColumnLeft tableButton`} onClick={() =>{editor.chain().focus().addColumnBefore().run()}}>
+                {/* 열 이전 추가 */}
+                <RiInsertColumnLeft/>
+                <Tooltip anchorSelect=".bubble-menu-button.insertColumnLeft" place="top">
+                  열 이전 추가
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button insertColumnRight tableButton`} onClick={() => editor.chain().focus().addColumnAfter().run()}>
+                {/* 열 이후 추가 */}
+                <RiInsertColumnRight/>
+                <Tooltip anchorSelect=".bubble-menu-button.insertColumnRight" place="top">
+                  열 이후 추가
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button deleteColumn tableButton`} onClick={() => editor.chain().focus().deleteColumn().run()}>
+                {/* 열 삭제 */}
+                <RiDeleteColumn/>
+                <Tooltip anchorSelect=".bubble-menu-button.deleteColumn" place="top">
+                  열 삭제
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button insertRowTop tableButton`} onClick={() => editor.chain().focus().addRowBefore().run()}>
+                {/* 행 이전 추가 */}
+                <RiInsertRowTop/>
+                <Tooltip anchorSelect=".bubble-menu-button.insertRowTop" place="top">
+                  행 이전 추가
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button insertRowBottom tableButton`} onClick={() => editor.chain().focus().addRowAfter().run()}>
+                {/* 행 이후 추가 */}
+                <RiInsertRowBottom/>
+                <Tooltip anchorSelect=".bubble-menu-button.insertRowBottom" place="top">
+                  행 이전 추가
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button deleteRow tableButton`} onClick={() => editor.chain().focus().deleteRow().run()}>
+                {/* 행 삭제 */}
+                <RiDeleteRow/>
+                <Tooltip anchorSelect=".bubble-menu-button.deleteRow" place="top">
+                  행 삭제
+                </Tooltip>
+              </div>
+              
+              <div className={`bubble-menu-button mergeCell tableButton`} onClick={() => editor.chain().focus().mergeCells().run()}>
+                {/* 셀 병합 */}
+                <RiMergeCellsHorizontal/>
+                <Tooltip anchorSelect=".bubble-menu-button.mergeCell" place="top">
+                  셀 병합
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button splitCell tableButton`} onClick={() => editor.chain().focus().splitCell().run()}>
+                {/* 셀 분할 */}
+                <RiSplitCellsHorizontal/>
+                <Tooltip anchorSelect=".bubble-menu-button.splitCell" place="top">
+                  셀 분할
+                </Tooltip>
+              </div>
+              <div className={`bubble-menu-button deleteTable tableButton`} onClick={() => editor.chain().focus().deleteTable().run()}>
+                <TbTableOff/>
+                <Tooltip anchorSelect=".bubble-menu-button.deleteTable" place="top">
+                  표 삭제
+                </Tooltip>
+              </div>
+              {/* <button onClick={() => editor.chain().focus().mergeOrSplit().run()}> */}
+                {/* Merge or split */}
+
+              {/* </button> */}
             </>
           }
         </BubbleMenu>
@@ -669,6 +749,7 @@ export default (props) => {
       </>
     </>
   )
-}
+};
 
 
+export default EditorContainer;
