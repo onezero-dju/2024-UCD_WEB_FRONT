@@ -16,8 +16,13 @@ export default function LoginContainer() {
   const [message, setMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [requestMessage, setRequestMessage] = useState('');
+  const [genOrgName, setGenOrgName] = useState('');
+  const [genOrgDisc, setGenOrgDisc] = useState('');
+  const [isGenOrgSectionOpen, setIsGenOrgSectionOpen] = useState(false);
   const navigate = useNavigate();
 
+  // 로그인 로직
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -34,8 +39,8 @@ export default function LoginContainer() {
       if (response.data.code === 200) {
         alert('로그인이 성공하였습니다');
         setCookie('token', response.data.token);
-        // checkUserOrganization(response.data.token);
-        navigate('/main')
+        checkUserOrganization(response.data.token);
+        // navigate('/main')
       } else {
         alert('로그인이 실패하였습니다');
       }
@@ -49,6 +54,7 @@ export default function LoginContainer() {
     }
   };
 
+  // 소속된 조직 검사
   const checkUserOrganization = async (token) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organizations/my`, {
@@ -58,6 +64,7 @@ export default function LoginContainer() {
         },
       });
       if (response.data.data.length > 0) {
+        alert(response.data.data)
         navigate('/main');
         console.log("가입된 조직이 있어서 메인으로 이동합니다.")
       } else {
@@ -73,6 +80,7 @@ export default function LoginContainer() {
     }
   };
 
+  // 조직 검색
   const handleSearchOrganization = async (event) => {
 		event.preventDefault()
     if (!searchKeyword) {
@@ -104,6 +112,7 @@ export default function LoginContainer() {
     }
   };
 
+  // 조직 신청
 	const handleJoinOrganization = async (id) => {
 		console.log(id);
 		try {
@@ -124,14 +133,22 @@ export default function LoginContainer() {
 			if (response.data.code === 201) {
 				alert('조직 가입 신청이 성공했습니다.');
 				setIsModalOpen(false);
-			} else {
+      } else {
 				alert('조직 가입 신청에 실패했습니다.');
 			}
 		} catch (error) {
 			console.error('조직 가입 신청 에러', error);
 			alert('조직 가입 신청에 실패했습니다.');
 		}
-	};
+  };
+  
+  const handleGenOrgSection = () => {
+    if (isGenOrgSectionOpen) {
+        setIsGenOrgSectionOpen(false);
+    } else {
+        setIsGenOrgSectionOpen(true)
+    }
+  }
 	
   return (
     <main className='login-container'>
@@ -152,8 +169,76 @@ export default function LoginContainer() {
         />
         <Button type='submit' label='로그인' size='full' primary />
       </form>
-
-      {isModalOpen && (
+      {isModalOpen &&
+      (<ModalFrame setModalOpen={setIsModalOpen}>
+        <div className={'modal-temp'}>
+            <div className={`modal-slider ${isGenOrgSectionOpen ? 'slide-bottom' : 'slide-top'}`}>
+                <h4 className='modal-title'>조직 참가하기</h4>
+                <div className='modal-content'>
+                    {/* <Input 
+                        type='text' id='join-org-id' label='조직 아이디 입력'
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        required
+                    />
+                    <Input 
+                        type='text' id='join-org-msg' label='요청 메시지'
+                        onChange={(e) => setRequestMessage(e.target.value)}
+                        required
+                    />
+                    <Button 
+                        type='submit' label='가입 요청' size='full' primary
+                        onClick={() => handleSearchOrganization()}
+                    /> */}
+                  <form onSubmit={handleSearchOrganization} className='search-org-name'>
+                    <Input
+                      type='text'
+                      
+                      label='조직 검색'
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      required
+                    />
+                    <Button type="submit" label='검색' size='full' primary/>
+                  </form>
+                    
+                  <div className='search-org-results'>
+                    {searchResults.map((org) => (
+                      <div key={org.organization_id} className='organization-item'>
+                        <span>{org.organization_name}</span>
+                        <Button
+                          label='가입 신청'
+                          onClick={() => handleJoinOrganization(org.organization_id)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="separator">
+                    {/* <div className="line"></div> */}
+                    <span className='view-gen-org-section' onClick={()=>handleGenOrgSection()}>{isGenOrgSectionOpen ? '가입 요청하기':'또는 직접 생성하기'}</span>
+                    {/* <div className="line"></div> */}
+                </div>
+                <h4 className='modal-title'>조직 생성</h4>
+                <div>
+                    <Input 
+                        type='text' id='gen-org-name' label='조직 이름'
+                        onChange={(e) => setGenOrgName(e.target.value)}
+                        required
+                    />
+                    <Input 
+                        type='text' id='gen-org-disc' label='조직 설명'
+                        onChange={(e) => setGenOrgDisc(e.target.value)}
+                        required
+                    />
+                    <Button 
+                        type='submit' label='조직 생성' size='full' primary
+                        // onClick={() => }
+                    />
+                </div>
+            </div>
+        </div>
+      </ModalFrame>
+      )}
+      {/* {isModalOpen && (
         <ModalFrame setModalOpen={setIsModalOpen}>
           <form onSubmit={handleSearchOrganization}>
             <Input
@@ -177,16 +262,8 @@ export default function LoginContainer() {
 							</div>
 						))}
 					</div>
-            {/* <Input
-              type='text'
-              id='message'
-              label='가입 신청 메시지'
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
-            <Button type='submit' label='가입 신청' size='full' /> */}
         </ModalFrame>
-      )}
+      )} */}
 
       <div className='signup-box'>
         <Link to='/signup' className='text-href'>
