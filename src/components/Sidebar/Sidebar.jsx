@@ -5,6 +5,8 @@ import { NavCirButton } from '../NavCirButton/NavCirButton';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
 import './Sidebar.css'
+import ModalFrame from '../ModalFrame/ModalFrame';
+import { Button } from '../Button/Button';
 
 function Sidebar() {
 
@@ -23,6 +25,7 @@ function Sidebar() {
   } = useContext(HomeDataContext); // Context 사용
 
   const [requestMessage, setRequestMessage] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,6 +53,9 @@ function Sidebar() {
     setSelectedChannelId(id);
     navigate('/main')
   }
+
+  // const handleRequest
+  // /api/organizations/{organization_id}/join-requests
 
   return (
     <div className='side'>
@@ -107,12 +113,34 @@ function Sidebar() {
           </div>
         </div>
         <div className='user-org-message'>
-          <div className='notification'>
+          <div className='notification' onClick={setIsModalOpen(true)}>
             <img src='/assets/icons/add-user.png' alt='Message Icon' />
             {requestMessage > 0 && (
               <span className='badge'>{requestMessage}</span>
             )}
           </div>
+          {isModalOpen &&
+            (<ModalFrame setModalOpen={setIsModalOpen}>
+              <div className={'modal-temp'}>
+                <h4 className='modal-title'>조직 가입 요청</h4>
+                <div className='modal-content'>
+                  { }
+
+                  <div className='search-org-results'>
+                    {searchResults.map((org) => (
+                      <div key={org.organization_id} className='organization-item'>
+                        <span>{org.organization_name}</span>
+                        <Button
+                          label='가입 신청'
+                          onClick={() => handleJoinOrganization(org.organization_id)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </ModalFrame>
+            )}
         </div>
       </div>
     </div>
