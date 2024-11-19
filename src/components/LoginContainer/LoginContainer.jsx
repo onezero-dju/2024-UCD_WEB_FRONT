@@ -82,7 +82,7 @@ export default function LoginContainer() {
 
   // 조직 검색
   const handleSearchOrganization = async (event) => {
-		event.preventDefault()
+    event.preventDefault()
     if (!searchKeyword) {
       alert('검색할 조직 이름을 입력해주세요.');
       return;
@@ -104,7 +104,7 @@ export default function LoginContainer() {
         setSearchResults(response.data.data);
       } else {
         alert('조직 검색에 실패했습니다.');
-				console.log(response.data.code);
+        console.log(response.data.code);
       }
     } catch (error) {
       console.error('조직 검색 에러', error);
@@ -113,43 +113,69 @@ export default function LoginContainer() {
   };
 
   // 조직 신청
-	const handleJoinOrganization = async (id) => {
-		console.log(id);
-		try {
-			const response = await axios.post(
-				`${process.env.REACT_APP_API_URL}/api/organizations/${id}/join`,
-				{
-					message: "가입 신청합니다.",
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${cookies.token}`,
-						'Content-Type': 'application/json',
-					},
-				}
-			);
-			console.log(response);
-	
-			if (response.data.code === 201) {
-				alert('조직 가입 신청이 성공했습니다.');
-				setIsModalOpen(false);
+  const handleJoinOrganization = async (id) => {
+    console.log(id);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/organizations/${id}/join`,
+        {
+          message: "가입 신청합니다.",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log(response);
+
+      if (response.data.code === 201) {
+        alert('조직 가입 신청이 성공했습니다.');
+        setIsModalOpen(false);
       } else {
-				alert('조직 가입 신청에 실패했습니다.');
-			}
-		} catch (error) {
-			console.error('조직 가입 신청 에러', error);
-			alert('조직 가입 신청에 실패했습니다.');
-		}
+        alert('조직 가입 신청에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('조직 가입 신청 에러', error);
+      alert('조직 가입 신청에 실패했습니다.');
+    }
   };
-  
+
   const handleGenOrgSection = () => {
     if (isGenOrgSectionOpen) {
-        setIsGenOrgSectionOpen(false);
+      setIsGenOrgSectionOpen(false);
     } else {
-        setIsGenOrgSectionOpen(true)
+      setIsGenOrgSectionOpen(true)
     }
   }
-	
+
+  const handleCreateOrg = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/organizations`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`
+          },
+        },
+        {
+          organization_name: genOrgName,
+          description: genOrgDisc
+        }
+      );
+      if (response.data.code === 201) {
+        alert("성공적으로 조직이 생성되었습니다.");
+        console.log(`조직: ${genOrgName} 생성 완료`);
+        navigate('/main');
+      } else {
+        console.log("조직 생성 실패");
+      }
+    } catch (error) {
+      console.error(`조직 생성 요청 에러 \n ${error}`);
+    }
+  }
+
   return (
     <main className='login-container'>
       <form className='login-field' onSubmit={handleSubmit}>
@@ -170,12 +196,12 @@ export default function LoginContainer() {
         <Button type='submit' label='로그인' size='full' primary />
       </form>
       {isModalOpen &&
-      (<ModalFrame setModalOpen={setIsModalOpen}>
-        <div className={'modal-temp'}>
+        (<ModalFrame setModalOpen={setIsModalOpen}>
+          <div className={'modal-temp'}>
             <div className={`modal-slider ${isGenOrgSectionOpen ? 'slide-bottom' : 'slide-top'}`}>
-                <h4 className='modal-title'>조직 참가하기</h4>
-                <div className='modal-content'>
-                    {/* <Input 
+              <h4 className='modal-title'>조직 참가하기</h4>
+              <div className='modal-content'>
+                {/* <Input 
                         type='text' id='join-org-id' label='조직 아이디 입력'
                         onChange={(e) => setSearchKeyword(e.target.value)}
                         required
@@ -189,55 +215,55 @@ export default function LoginContainer() {
                         type='submit' label='가입 요청' size='full' primary
                         onClick={() => handleSearchOrganization()}
                     /> */}
-                  <form onSubmit={handleSearchOrganization} className='search-org-name'>
-                    <Input
-                      type='text'
-                      
-                      label='조직 검색'
-                      onChange={(e) => setSearchKeyword(e.target.value)}
-                      required
-                    />
-                    <Button type="submit" label='검색' size='full' primary/>
-                  </form>
-                    
-                  <div className='search-org-results'>
-                    {searchResults.map((org) => (
-                      <div key={org.organization_id} className='organization-item'>
-                        <span>{org.organization_name}</span>
-                        <Button
-                          label='가입 신청'
-                          onClick={() => handleJoinOrganization(org.organization_id)}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                <form onSubmit={handleSearchOrganization} className='search-org-name'>
+                  <Input
+                    type='text'
+
+                    label='조직 검색'
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    required
+                  />
+                  <Button type="submit" label='검색' size='full' primary />
+                </form>
+
+                <div className='search-org-results'>
+                  {searchResults.map((org) => (
+                    <div key={org.organization_id} className='organization-item'>
+                      <span>{org.organization_name}</span>
+                      <Button
+                        label='가입 신청'
+                        onClick={() => handleJoinOrganization(org.organization_id)}
+                      />
+                    </div>
+                  ))}
                 </div>
-                <div className="separator">
-                    {/* <div className="line"></div> */}
-                    <span className='view-gen-org-section' onClick={()=>handleGenOrgSection()}>{isGenOrgSectionOpen ? '가입 요청하기':'또는 직접 생성하기'}</span>
-                    {/* <div className="line"></div> */}
-                </div>
-                <h4 className='modal-title'>조직 생성</h4>
-                <div>
-                    <Input 
-                        type='text' id='gen-org-name' label='조직 이름'
-                        onChange={(e) => setGenOrgName(e.target.value)}
-                        required
-                    />
-                    <Input 
-                        type='text' id='gen-org-disc' label='조직 설명'
-                        onChange={(e) => setGenOrgDisc(e.target.value)}
-                        required
-                    />
-                    <Button 
-                        type='submit' label='조직 생성' size='full' primary
-                        // onClick={() => }
-                    />
-                </div>
+              </div>
+              <div className="separator">
+                {/* <div className="line"></div> */}
+                <span className='view-gen-org-section' onClick={() => handleGenOrgSection()}>{isGenOrgSectionOpen ? '가입 요청하기' : '또는 직접 생성하기'}</span>
+                {/* <div className="line"></div> */}
+              </div>
+              <h4 className='modal-title'>조직 생성</h4>
+              <div>
+                <Input
+                  type='text' id='gen-org-name' label='조직 이름'
+                  onChange={(e) => setGenOrgName(e.target.value)}
+                  required
+                />
+                <Input
+                  type='text' id='gen-org-disc' label='조직 설명'
+                  onChange={(e) => setGenOrgDisc(e.target.value)}
+                  required
+                />
+                <Button
+                  type='submit' label='조직 생성' size='full' primary
+                  onClick={() => handleCreateOrg()}
+                />
+              </div>
             </div>
-        </div>
-      </ModalFrame>
-      )}
+          </div>
+        </ModalFrame>
+        )}
       {/* {isModalOpen && (
         <ModalFrame setModalOpen={setIsModalOpen}>
           <form onSubmit={handleSearchOrganization}>
