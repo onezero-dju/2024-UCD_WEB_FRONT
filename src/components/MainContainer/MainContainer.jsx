@@ -20,7 +20,7 @@ function MainContainer() {
     const [genMeetingAgenda, setGenMeetingAgenda] = useState(null);
     const [isGenCategorySectionOpen, setGenCategorySectionOpen] = useState(false);
     const [isGenMeetingSectionOpen, setGenMeetingSectionOpen] = useState(false);
-    const { responseData: mainData, loading: getMeetingLoading, error: getMeetingError, fetchGetMeetingList } = useGetMeetingList();
+    const { responseData: mainData, loading: getMeetingLoading, error: getMeetingError, fetchGetMeetingList } = useGetMeetingList(10);
     const { responseData: genCategoryResponse, loading: genCategoryLoading, error: genCategoryError, fetchGenCategory } = useGenCategory();
     const { responseData: getCategoryResponse, loading: getCategoryLoading, error: getCategoryError, fetchGetCategory } = useGetCategories();
     const { responseData: genMeetingResponse, loading: genMeetingLoading, error: genMeetingError, fetchGenMeeting } = useGenMeeting();
@@ -90,13 +90,14 @@ function MainContainer() {
     };
 
     useEffect(()=>{
+      if(!selectedChannelId)return;
         fetchGetMeetingList(selectedChannelId);
     }, [selectedChannelId])
     
     useEffect(()=>{
         console.log(mainData);
     }, [mainData])
-
+    
     useEffect(()=>{
         if(isGenMeetingSectionOpen){
             fetchGetCategory(selectedChannelId);

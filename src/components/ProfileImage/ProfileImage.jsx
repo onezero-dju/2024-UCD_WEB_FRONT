@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import './ProfileImage.css'
 
 /** 사용자 프로필 사진 */
-export const ProfileImage = ({name, size='medium'}) => {
+export const ProfileImage = ({name, color, size='medium'}) => {
   return (
-    <div className={`profile-image ${size}`}>{name[0]}</div>
+    <div className={`profile-image ${size}`} style={{backgroundColor:`${color}`}} >{name}</div>
   )
 }
 
