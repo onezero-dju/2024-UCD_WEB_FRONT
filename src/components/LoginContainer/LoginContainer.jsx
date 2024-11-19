@@ -6,6 +6,7 @@ import './LoginContainer.css';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import ModalFrame from '../ModalFrame/ModalFrame';
+import useCheckLogin from '../../hooks/useCheckLogin';
 
 export default function LoginContainer() {
   const [id, setId] = useState('');
@@ -20,6 +21,7 @@ export default function LoginContainer() {
   const [genOrgName, setGenOrgName] = useState('');
   const [genOrgDisc, setGenOrgDisc] = useState('');
   const [isGenOrgSectionOpen, setIsGenOrgSectionOpen] = useState(false);
+  useCheckLogin('token');
   const navigate = useNavigate();
 
   // 로그인 로직
@@ -150,6 +152,7 @@ export default function LoginContainer() {
     }
   }
 
+  // 조직 생성 (조직이 없는 회원)
   const handleCreateOrg = async () => {
     try {
       const response = await axios.post(
@@ -201,20 +204,6 @@ export default function LoginContainer() {
             <div className={`modal-slider ${isGenOrgSectionOpen ? 'slide-bottom' : 'slide-top'}`}>
               <h4 className='modal-title'>조직 참가하기</h4>
               <div className='modal-content'>
-                {/* <Input 
-                        type='text' id='join-org-id' label='조직 아이디 입력'
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        required
-                    />
-                    <Input 
-                        type='text' id='join-org-msg' label='요청 메시지'
-                        onChange={(e) => setRequestMessage(e.target.value)}
-                        required
-                    />
-                    <Button 
-                        type='submit' label='가입 요청' size='full' primary
-                        onClick={() => handleSearchOrganization()}
-                    /> */}
                 <form onSubmit={handleSearchOrganization} className='search-org-name'>
                   <Input
                     type='text'
@@ -264,33 +253,6 @@ export default function LoginContainer() {
           </div>
         </ModalFrame>
         )}
-      {/* {isModalOpen && (
-        <ModalFrame setModalOpen={setIsModalOpen}>
-          <form onSubmit={handleSearchOrganization}>
-            <Input
-              type='text'
-              id='searchKeyword'
-              label='조직 검색'
-              onChange={(e) => setSearchKeyword(e.target.value)}
-							required
-						/>
-            <Button type="submit" label='검색' size='full' primary/>
-					</form>
-						
-					<div className='search-results'>
-						{searchResults.map((org) => (
-							<div key={org.organization_id} className='organization-item'>
-								<span>{org.organization_name}</span>
-								<Button
-									label='가입 신청'
-									onClick={() => handleJoinOrganization(org.organization_id)}
-								/>
-							</div>
-						))}
-					</div>
-        </ModalFrame>
-      )} */}
-
       <div className='signup-box'>
         <Link to='/signup' className='text-href'>
           회원가입 &gt;

@@ -103,3 +103,16 @@ button:hover {
   align-items: center;
   margin-bottom: 4px;
 }
+
+.request-org-list {
+  overflow-y: scroll;
+  width: 50%;
+  height: 100%;
+}
+
+.request-message-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 4px;
+}
