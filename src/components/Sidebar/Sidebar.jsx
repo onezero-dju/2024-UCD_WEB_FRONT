@@ -43,7 +43,7 @@ function Sidebar() {
 
   useEffect(() => {
     userAdminOrg.forEach((org) => {
-      handleRequestMessage(org.organization_id); // 조직 가입 요청 메세지 fetching
+      handleRequestMessage(org["organization_id"]); // 조직 가입 요청 메세지 fetching
     })
   }, [userAdminOrg])
 
@@ -57,7 +57,7 @@ function Sidebar() {
           }
         })
       if (response.data.code === 200) {
-        console.log(`회원 정보 조회 완료 \n ${response.data.data}`);
+        console.log("회원 정보 조회 완료");
         setUserInfo(response.data.data);
       }
     } catch (error) {
@@ -76,12 +76,14 @@ function Sidebar() {
       });
       console.log(response);
       if (response.data.data.length > 0) {
-        console.log(`소속된 조직 검색 완료 \n ${response.data.data}`)
-        response.data.data.forEach((info) => {
+        const adminOrg = response.data.data.map((info) => {
+          let org = {};
           if (info.role === 'admin') {
-            setUserAdminOrg([...userAdminOrg, info]); // 관리자인 조직 저장
+            org = info;
           }
+          return org
         })
+        setUserAdminOrg([adminOrg])
       }
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -104,13 +106,15 @@ function Sidebar() {
         })
 
       if (response.data.code === 200) {
+        console.log('가입요청목록조회성공')
         setRequestMessage([...requestMessage, response.data.data])
       } else {
         console.log('조직 가입 요청 목록 조회 실패');
       }
 
     } catch (error) {
-      console.error(`조직 가입 요청 목록 조회 에러 \n ${error}`);
+      console.error(`조직 가입 요청 목록 조회 에러`);
+      console.error(`${error}`);
     }
   }
 
