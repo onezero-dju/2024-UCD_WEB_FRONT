@@ -21,7 +21,7 @@ export default function LoginContainer() {
   const [genOrgName, setGenOrgName] = useState('');
   const [genOrgDisc, setGenOrgDisc] = useState('');
   const [isGenOrgSectionOpen, setIsGenOrgSectionOpen] = useState(false);
-  useCheckLogin('token');
+  // useCheckLogin('token');
   const navigate = useNavigate();
 
   // 로그인 로직
@@ -41,8 +41,8 @@ export default function LoginContainer() {
       if (response.data.code === 200) {
         alert('로그인이 성공하였습니다');
         setCookie('token', response.data.token);
-        // checkUserOrganization(response.data.token);
-        navigate('/main')
+        checkUserOrganization(response.data.token);
+        // navigate('/main')
       } else {
         alert('로그인이 실패하였습니다');
       }
@@ -66,7 +66,6 @@ export default function LoginContainer() {
         },
       });
       if (response.data.data.length > 0) {
-        alert(response.data.data)
         navigate('/main');
         console.log("가입된 조직이 있어서 메인으로 이동합니다.")
       } else {

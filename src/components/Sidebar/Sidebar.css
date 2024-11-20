@@ -123,3 +123,119 @@
   align-items: center;
   justify-content: center;
 }
+
+.request-modal-temp{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 320px;
+  gap: 16px;
+  /* padding: 20px; */
+}
+
+.request-modal-title{
+  font-size: 24px;
+  text-align: left;
+}
+
+.request-modal-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #488df5;
+  border-radius: 12px;
+  height: 70%;
+  width: 90%;
+}
+
+.request-message-results {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  /* overflow-y: scroll; */
+  width: 60%;
+  height: 100%;
+}
+
+.organization-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.request-org-list {
+  /* overflow-y: scroll; */
+  /* border-right: 1px solid #b4b4b4; */
+  /* border-right: 1px solid #488df5; */
+  width: 40%;
+  height: 100%;
+}
+
+.request-message-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  align-items: center;
+  /* margin-top: 4px; */
+  padding: 6px 8px;
+  font-size: 13px;
+  /* gap: 6px; */
+  /* border-bottom: 1px solid rgba(209, 209, 209, 0.692); */
+  /* border-bottom: 1px solid #b4b4b4; */
+  /* border-bottom: 1px solid #488df5; */
+}
+
+.request-message-item button {
+  border-radius: 12px;
+  /* border: 1px solid #6f6f6f; */
+  border: none;
+  color: white;
+  background-color: #0066FF;
+  height: 28px;
+  width: 48px;
+}
+
+.request-message-item button:hover {
+  background-color: white;
+  color: #0066FF;
+  border: 1px solid #0066FF;
+  transition: 0.5s;
+}
+
+.request-message-view {
+  /* background-color: black; */
+  margin-bottom: 36px;
+  width: 90%;
+  height: 72%;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.request-button-wrapper{
+  display: flex;
+  position: absolute;
+  bottom: 40px;
+  gap: 24px;
+}
+
+.request-message-button {
+  border-radius: 8px;
+  border: none;
+  border: 1px solid white;
+  background-color: #0066FF;
+  color:white;
+  font-weight: 400;
+  width: 64px;
+  height: 28px;
+}
+
+.request-message-button:hover {
+  background-color: white;
+  color: #0066FF;
+  border: 1px solid #0066FF;
+  transition: 0.5s;
+}

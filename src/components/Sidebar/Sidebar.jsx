@@ -30,23 +30,24 @@ function Sidebar() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 조직 가입 요청 목록 모달창
   const [cookies, setCookie] = useCookies(['token']);
   const [userAdminOrg, setUserAdminOrg] = useState([]);
-  const [userInfo, setUserInfo] = useState(''); // 회원 정보 조회
+  const [viewMessage, setViewMessage] = useState("");
+  const [userInfo, setUserInfo] = useState({}); // 회원 정보 조회
 
 
   const navigate = useNavigate();
 
   useEffect(() => {
     handleUserInfo(); // 회원 정보 조회
-    handleAdminOrgInfo(); // 소속된 조직 리스트 요청
+    handleAdminOrgInfo(); // 관리자 권한이 있는 조직 리스트 요청
   }, [])
 
   useEffect(() => {
     userAdminOrg.forEach((org) => {
       handleRequestMessage(org.organization_id); // 조직 가입 요청 메세지 fetching
     })
-  }, [userAdminOrg, userInfo])
+  }, [userAdminOrg])
 
-
+  // 회원 정보 조회
   const handleUserInfo = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/me`,
@@ -56,14 +57,15 @@ function Sidebar() {
           }
         })
       if (response.data.code === 200) {
-        console.log(`회원 정보 조회 완료 \n ${response.data.data.role}`);
-        setUserInfo(response.data.data.role);
+        console.log(`회원 정보 조회 완료 \n ${response.data.data}`);
+        setUserInfo(response.data.data);
       }
     } catch (error) {
       console.error(`회원 정보 조회 에러 \n ${error}`);
     }
   }
 
+  // 관리자 권한이 있는 조직 정보 반환 
   const handleAdminOrgInfo = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organizations/my`, {
@@ -72,11 +74,12 @@ function Sidebar() {
           Authorization: `Bearer ${cookies.token}`,
         },
       });
+      console.log(response);
       if (response.data.data.length > 0) {
         console.log(`소속된 조직 검색 완료 \n ${response.data.data}`)
-        response.data.data.forEach((data) => {
-          if (data.role === 'admin') {
-            setUserAdminOrg([...userAdminOrg, data]); // 관리자인 조직 저장
+        response.data.data.forEach((info) => {
+          if (info.role === 'admin') {
+            setUserAdminOrg([...userAdminOrg, info]); // 관리자인 조직 저장
           }
         })
       }
@@ -118,8 +121,8 @@ function Sidebar() {
     setSelectedOrgId(id);
     setSelectedChannels(channelsByOrgId);
     // 해당 조직의 첫번째 채널을 선택
-    const firstChannelId = channelsByOrgId[0].channel_id;
-    setSelectedChannelId(firstChannelId);
+    const viewMessageChannelId = channelsByOrgId[0].channel_id;
+    setSelectedChannelId(viewMessageChannelId);
     navigate('/main')
   }
 
@@ -182,11 +185,11 @@ function Sidebar() {
         <div>
           <ProfileImage name={myName} size='medium' />
           <div>
-            <div className='user-name'>{myName}</div>
-            <div className='user-desc'>{myRole}</div>
+            <div className='user-name'>{userInfo["email"]}</div>
+            <div className='user-desc'>{userInfo["role"]}</div>
           </div>
         </div>
-        {userInfo === 'ROLE_ADMIN' &&
+        {userAdminOrg.length >= 0 &&
           (<div className='user-org-message'>
             <div className='notification' onClick={() => setIsModalOpen(true)}>
               <img src='/assets/icons/add-user.png' alt='Message Icon' />
@@ -198,30 +201,29 @@ function Sidebar() {
           )}
         {isModalOpen &&
           (<ModalFrame setModalOpen={setIsModalOpen}>
-            <div className={'modal-temp'}>
-              <h4 className='modal-title'>조직 가입 요청</h4>
-              <div className='modal-content'>
+            <div className={'request-modal-temp'}>
+              <h4 className='request-modal-title'>조직 가입 신청서 목록</h4>
+              <div className='request-modal-content'>
                 <div className='request-org-list'>
-                  {requestMessage.map((message) => (
+                  {requestMessage.length > 0 && requestMessage.map((message) => (
                     <div key={message.organization_id} className='request-message-item'>
-                      <span>{message.username}</span>
-                      <Button
-                        label='가입 신청 메세지 보기'
-                        onClick={() => showRequestMessage(message.message)}
-                      />
+                      <span className='request-info-org'>조직: {message.username}</span>
+                      <span className='request-info-user'>유저: {message.username}</span>
+                      <button
+                        onClick={() => setViewMessage(message.message)}>
+                        보기
+                      </button>
                     </div>
                   ))}
                 </div>
-                <div className='search-org-results'>
-                  {searchResults.map((org) => (
-                    <div key={org.organization_id} className='organization-item'>
-                      <span>{org.organization_name}</span>
-                      <Button
-                        label='가입 신청'
-                        onClick={() => handleJoinOrganization(org.organization_id)}
-                      />
-                    </div>
-                  ))}
+                <div className='request-message-results'>
+                  <div className='request-message-view'>
+                    {viewMessage}
+                  </div>
+                  <div className='request-button-wrapper'>
+                    <button className='request-message-button'>수락</button>
+                    <button className='request-message-button'>거절</button>
+                  </div>
                 </div>
               </div>
             </div>
