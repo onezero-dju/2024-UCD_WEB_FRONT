@@ -30,8 +30,8 @@ function Sidebar() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 조직 가입 요청 목록 모달창
   const [cookies, setCookie] = useCookies(['token']);
   const [userAdminOrg, setUserAdminOrg] = useState([]);
-  const [viewMessage, setViewMessage] = useState("");
   const [userInfo, setUserInfo] = useState({}); // 회원 정보 조회
+  const [currentMessage, setCurrentMessage] = useState({});
 
 
   const navigate = useNavigate();
@@ -42,10 +42,12 @@ function Sidebar() {
   }, [])
 
   useEffect(() => {
-    userAdminOrg.forEach((org) => {
-      handleRequestMessage(org["organization_id"]); // 조직 가입 요청 메세지 fetching
-    })
-  }, [userAdminOrg])
+    if (userAdminOrg && Array.isArray(userAdminOrg)) {
+      userAdminOrg.forEach((org) => {
+        handleRequestMessage(org.organization_id, org.organization_name);
+      });
+    }
+  }, [userAdminOrg]);
 
   // 회원 정보 조회
   const handleUserInfo = async () => {
@@ -57,7 +59,7 @@ function Sidebar() {
           }
         })
       if (response.data.code === 200) {
-        console.log("회원 정보 조회 완료");
+        // console.log("회원 정보 조회 완료");
         setUserInfo(response.data.data);
       }
     } catch (error) {
@@ -74,8 +76,8 @@ function Sidebar() {
           Authorization: `Bearer ${cookies.token}`,
         },
       });
-      console.log(response);
       if (response.data.data.length > 0) {
+        // admin 권한이 있는 조직만 필터링
         const adminOrg = response.data.data.map((info) => {
           let org = {};
           if (info.role === 'admin') {
@@ -83,7 +85,7 @@ function Sidebar() {
           }
           return org
         })
-        setUserAdminOrg([adminOrg])
+        setUserAdminOrg(adminOrg)
       }
     } catch (error) {
       if (error.response && error.response.status === 403) {
@@ -96,18 +98,26 @@ function Sidebar() {
   };
 
   // 조직 가입 요청 목록 조회
-  const handleRequestMessage = async (organization_id) => {
+  const handleRequestMessage = async (organization_id, organization_name) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests`,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
-          }
-        })
+            'Content-Type': 'application/json',
+          },
+        });
 
       if (response.data.code === 200) {
-        console.log('가입요청목록조회성공')
-        setRequestMessage([...requestMessage, response.data.data])
+        // console.log('가입요청목록조회성공')
+        // message에 조직 이름도 담아서 핸들링
+        const messages = response.data.data.map((message) => {
+          message["organization_name"] = organization_name;
+          message["organization_id"] = organization_id;
+          return message
+        });
+        console.log(messages);
+        setRequestMessage([...requestMessage, ...messages]);
       } else {
         console.log('조직 가입 요청 목록 조회 실패');
       }
@@ -115,6 +125,25 @@ function Sidebar() {
     } catch (error) {
       console.error(`조직 가입 요청 목록 조회 에러`);
       console.error(`${error}`);
+    }
+  }
+
+  // 조직 가입 요청 승인 및 거절
+  const decideJoinRequest = async (organization_id, request_id, decision) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
+        // const response = await axios.post('http://34.64.165.164:8080/api/organizations/49/join-requests/20/approve',
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.token}`,
+          }
+        });
+
+      if (response.data.code === 200) {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -209,24 +238,28 @@ function Sidebar() {
               <h4 className='request-modal-title'>조직 가입 신청서 목록</h4>
               <div className='request-modal-content'>
                 <div className='request-org-list'>
-                  {requestMessage.length > 0 && requestMessage.map((message) => (
-                    <div key={message.organization_id} className='request-message-item'>
-                      <span className='request-info-org'>조직: {message.username}</span>
-                      <span className='request-info-user'>유저: {message.username}</span>
-                      <button
-                        onClick={() => setViewMessage(message.message)}>
-                        보기
-                      </button>
-                    </div>
-                  ))}
+                  {requestMessage.length > 0 && requestMessage.map((message) => {
+                    return (
+                      <div key={message.organization_id} className='request-message-item'>
+                        <span className='request-info'>조직</span>
+                        {message.organization_name}
+                        <span className='request-info'>유저</span>
+                        {message.username}
+                        <button
+                          onClick={() => setCurrentMessage(message)}>
+                          보기
+                        </button>
+                      </div>
+                    )
+                  })}
                 </div>
                 <div className='request-message-results'>
                   <div className='request-message-view'>
-                    {viewMessage}
+                    {currentMessage.message}
                   </div>
                   <div className='request-button-wrapper'>
-                    <button className='request-message-button'>수락</button>
-                    <button className='request-message-button'>거절</button>
+                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, "approve")}>수락</button>
+                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, "reject")}>거절</button>
                   </div>
                 </div>
               </div>
