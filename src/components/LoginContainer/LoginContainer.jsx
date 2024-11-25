@@ -7,20 +7,21 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import ModalFrame from '../ModalFrame/ModalFrame';
 import useCheckLogin from '../../hooks/useCheckLogin';
+import WriteModal from '../WriteModal/WriteModal';
 
 export default function LoginContainer() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [cookies, setCookie] = useCookies(['token']);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [organizationId, setOrganizationId] = useState('');
-  const [message, setMessage] = useState('');
   const [searchKeyword, setSearchKeyword] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [requestMessage, setRequestMessage] = useState('');
   const [genOrgName, setGenOrgName] = useState('');
   const [genOrgDisc, setGenOrgDisc] = useState('');
   const [isGenOrgSectionOpen, setIsGenOrgSectionOpen] = useState(false);
+  const [writeMessage, setWriteMessage] = useState('');
+  const [writeModalOpen, setWriteModalOpen] = useState(false);
+  const [currentOrg, setCurrentOrg] = useState({});
   // useCheckLogin('token');
   const navigate = useNavigate();
 
@@ -220,7 +221,11 @@ export default function LoginContainer() {
                       <span>{org.organization_name}</span>
                       <Button
                         label='가입 신청'
-                        onClick={() => handleJoinOrganization(org.organization_id)}
+                        // onClick={() => handleJoinOrganization(org.organization_id)}
+                        onClick={() => {
+                          setCurrentOrg(org.organization_id)
+                          setWriteModalOpen(true);
+                        }}
                       />
                     </div>
                   ))}
@@ -252,11 +257,19 @@ export default function LoginContainer() {
           </div>
         </ModalFrame>
         )}
+      {writeModalOpen &&
+        <WriteModal
+          setModalOpen={setWriteModalOpen}
+          // setCurrentOrg={setCurrentOrg}
+          setWriteMessage={setWriteMessage}
+          handleJoinRequest={() => handleJoinOrganization(currentOrg.organization_id)}
+        />
+      }
       <div className='signup-box'>
         <Link to='/signup' className='text-href'>
           회원가입 &gt;
         </Link>
       </div>
-    </main>
+    </main >
   );
 }
