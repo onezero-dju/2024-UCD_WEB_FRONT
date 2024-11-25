@@ -1,24 +1,32 @@
 .btn{
     height: 38px;
     box-sizing: border-box;
-    border: 1px solid #505050;
+    border: 1px solid #0066FF;
     border-radius: 10px;
     font-weight: 500;
     font-size: 16px;
 } 
 
 .btn.primary{
-    background-color: #505050;
+    background-color: #0066FF;
     color: white;
 }
 
+/* .btn.btn.primary:hover {
+  background-color: white;
+  color: #0066FF;
+  transition: 0.5s;
+} */
+
 .btn.secondary{
     background-color: white;
-    color: #505050;
+    color: #0066FF;
 }
 
 .btn.secondary:hover{
-    background-color: #efefef;
+    background-color: #0066FF;
+    color: white;
+    transition: 0.5s;
 }
 
 .btn.full{
