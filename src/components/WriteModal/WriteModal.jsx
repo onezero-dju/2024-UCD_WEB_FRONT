@@ -1,16 +1,10 @@
-import React, { useEffect, useRef } from 'react'
 import './WriteModal.css'
-import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { createPortal } from "react-dom";
 import { Button } from '../Button/Button';
 
 
 const WriteModal = ({ setModalOpen, setWriteMessage, handleJoinRequest }) => {
-  const ref = useRef();
 
-  useOnClickOutside(ref, () => {
-    setModalOpen(false);
-  })
 
   return (
     createPortal(
