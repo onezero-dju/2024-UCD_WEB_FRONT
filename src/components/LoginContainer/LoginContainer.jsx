@@ -157,13 +157,14 @@ export default function LoginContainer() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`,
         {
-          headers: {
-            Authorization: `Bearer ${cookies.token}`,
-          },
-        },
-        {
           organization_name: genOrgName,
           description: genOrgDisc,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${cookies.token}`,
+          },
         });
 
       if (response.data.code === 201) {

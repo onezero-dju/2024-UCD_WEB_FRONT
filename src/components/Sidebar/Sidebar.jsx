@@ -149,18 +149,9 @@ function Sidebar() {
   // 조직 가입 요청 승인 및 거절
   const decideJoinRequest = async (organization_id, request_id, decision) => {
     try {
-      // const response = await axios.post(
-      //   `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
-      //   {
-      //     withCredentials: true,
-      //     headers: {
-      //       Authorization: `Bearer ${cookies.token}`,
-      //       'Content-Type': 'application/json',
-      //     },
-      //   }
-      // );
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
