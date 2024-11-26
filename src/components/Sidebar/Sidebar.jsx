@@ -9,6 +9,7 @@ import ModalFrame from '../ModalFrame/ModalFrame';
 import { Button } from '../Button/Button';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+import { P } from 'storybook/internal/components';
 
 function Sidebar() {
 
@@ -48,6 +49,23 @@ function Sidebar() {
       });
     }
   }, [userAdminOrg]);
+
+  // const test = async (organization_id, requests_id) => {
+  //   try {
+  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${requests_id}/reject`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${cookies.token}`,
+  //         }
+  //       })
+  //     if (response.data.code === 200) {
+  //       console.log(response.data.data);
+  //     }
+  //   } catch (error) {
+  //     console.error(`회원 정보 조회 에러 \n ${error}`);
+  //   }
+  // }
+
 
   // 회원 정보 조회
   const handleUserInfo = async () => {
@@ -116,7 +134,7 @@ function Sidebar() {
           message["organization_id"] = organization_id;
           return message
         });
-        console.log(messages);
+        // console.log(messages);
         setRequestMessage([...requestMessage, ...messages]);
       } else {
         console.log('조직 가입 요청 목록 조회 실패');
@@ -131,16 +149,30 @@ function Sidebar() {
   // 조직 가입 요청 승인 및 거절
   const decideJoinRequest = async (organization_id, request_id, decision) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
-        // const response = await axios.post('http://34.64.165.164:8080/api/organizations/49/join-requests/20/approve',
+      // const response = await axios.post(
+      //   `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
+      //   {
+      //     withCredentials: true,
+      //     headers: {
+      //       Authorization: `Bearer ${cookies.token}`,
+      //       'Content-Type': 'application/json',
+      //     },
+      //   }
+      // );
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
-          }
-        });
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
       if (response.data.code === 200) {
         console.log(response.data.message);
+      } else {
+        console.log('조직 가입 요청에 대한 처리 실패');
       }
     } catch (error) {
       console.error(error);
@@ -150,7 +182,7 @@ function Sidebar() {
   // Organization 클릭 시 실행
   const handleOrganizationClick = (id) => {
     // 조직 ID 기반 채널 리스트 선택
-    const channelsByOrgId = homeData.organizations.filter(org => org.organization_id == id)[0].channels;
+    const channelsByOrgId = homeData.organizations.filter(org => org.organization_id === id)[0].channels;
     setSelectedOrgId(id);
     setSelectedChannels(channelsByOrgId);
     // 해당 조직의 첫번째 채널을 선택
@@ -209,7 +241,7 @@ function Sidebar() {
             <NavCirButton
               dataId={0}
               label='+'
-              onClick={console.log('Add Organization')}
+            // onClick={console.log('Add Organization')}
             />
           </ul>
         </div>
@@ -240,7 +272,7 @@ function Sidebar() {
                 <div className='request-org-list'>
                   {requestMessage.length > 0 && requestMessage.map((message) => {
                     return (
-                      <div key={message.organization_id} className='request-message-item'>
+                      <div key={message.request_id} className='request-message-item'>
                         <span className='request-info'>조직</span>
                         {message.organization_name}
                         <span className='request-info'>유저</span>
@@ -256,10 +288,12 @@ function Sidebar() {
                 <div className='request-message-results'>
                   <div className='request-message-view'>
                     {currentMessage.message}
+                    {currentMessage.organization_id},{currentMessage.request_id}
                   </div>
                   <div className='request-button-wrapper'>
-                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, "approve")}>수락</button>
-                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, "reject")}>거절</button>
+                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, 'approve')}>수락</button>
+                    <button onClick={() => decideJoinRequest(currentMessage.organization_id, currentMessage.request_id, 'reject')}>거절</button>
+                    {/* <button onClick={() => test(currentMessage.organization_id, currentMessage.request_id)}>거절</button> */}
                   </div>
                 </div>
               </div>
