@@ -147,7 +147,7 @@
   /* border: 2px solid #488df5; */
   border: 2px solid #ccc;
   border-radius: 12px;
-  height: 70%;
+  height: 75%;
   width: 90%;
 }
 
@@ -218,10 +218,10 @@
 
 .request-message-view {
   /* background-color: black; */
-  margin-bottom: 36px;
+  margin-bottom: 30px;
   padding: 12px;
   width: 80%;
-  height: 60%;
+  height: 70%;
   border-radius: 12px;
   border: 1px solid #eee;
 }
@@ -229,7 +229,7 @@
 .request-button-wrapper{
   display: flex;
   position: absolute;
-  bottom: 40px;
+  bottom: 24px;
   gap: 24px;
 }
 
