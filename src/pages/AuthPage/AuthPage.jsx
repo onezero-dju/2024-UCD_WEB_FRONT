@@ -12,7 +12,13 @@ function AuthPage() {
 
   return (
     <div className='auth-page page-align-horizontal'>
-      <AuthLeft />
+      {/* <AuthLeft /> */}
+      <span className='title-letter-key'>KEY</span>
+      <span className='title-letter-note'>NOTE</span>
+      {/* <img className='stamp-image' src='assets/icons/chat_bot.svg' alt='stamp' /> */}
+      <div className='init-image-wrapper'>
+        <img src='assets/images/회의테이블.png' alt='초기이미지' />
+      </div>
       <div className={`auth-right ${transitionClass}`}>
         <div className={`slider ${isLogin ? 'move-left' : 'move-right'}`}>
           <LoginContainer />
