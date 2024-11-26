@@ -97,12 +97,13 @@
     color: #666;
 }
 
-.settings{
+.user-org-message{
+    position: relative;
     width: 24px;
     height: 24px;
 }
 
-.settings > img {
+.notification img {
     width: 100%;
     height: 100%;
     object-fit: cover;
