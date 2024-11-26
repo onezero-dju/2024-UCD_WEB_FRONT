@@ -130,7 +130,7 @@ export default function LoginContainer() {
           },
         }
       );
-      console.log(response);
+      // console.log(response);
 
       if (response.data.code === 201) {
         alert('조직 가입 신청이 성공했습니다.');
@@ -155,18 +155,17 @@ export default function LoginContainer() {
   // 조직 생성 (조직이 없는 회원)
   const handleCreateOrg = async () => {
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/organizations`,
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`,
         {
           headers: {
-            Authorization: `Bearer ${cookies.token}`
+            Authorization: `Bearer ${cookies.token}`,
           },
         },
         {
           organization_name: genOrgName,
-          description: genOrgDisc
-        }
-      );
+          description: genOrgDisc,
+        });
+
       if (response.data.code === 201) {
         alert("성공적으로 조직이 생성되었습니다.");
         console.log(`조직: ${genOrgName} 생성 완료`);
@@ -181,23 +180,25 @@ export default function LoginContainer() {
 
   return (
     <main className='login-container'>
-      <form className='login-field' onSubmit={handleSubmit}>
-        <Input
-          type='text'
-          id='email'
-          label='이메일'
-          onChange={(e) => setId(e.target.value)}
-          required
-        />
-        <Input
-          type='password'
-          id='password'
-          label='비밀번호'
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <Button type='submit' label='로그인' size='full' primary />
-      </form>
+      <div className='login-field-wrapper'>
+        <form className='login-field' onSubmit={handleSubmit}>
+          <Input
+            type='text'
+            id='email'
+            label='이메일'
+            onChange={(e) => setId(e.target.value)}
+            required
+          />
+          <Input
+            type='password'
+            id='password'
+            label='비밀번호'
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button type='submit' label='로그인' size='full' primary />
+        </form>
+      </div>
       {isModalOpen &&
         (<ModalFrame setModalOpen={setIsModalOpen}>
           <div className={'modal-temp'}>
@@ -221,11 +222,11 @@ export default function LoginContainer() {
                       <span>{org.organization_name}</span>
                       <Button
                         label='가입 신청'
-                        // onClick={() => handleJoinOrganization(org.organization_id)}
-                        onClick={() => {
-                          setCurrentOrg(org.organization_id)
-                          setWriteModalOpen(true);
-                        }}
+                        onClick={() => handleJoinOrganization(org.organization_id)}
+                      // onClick={() => {
+                      //   setCurrentOrg(org.organization_id)
+                      //   setWriteModalOpen(true);
+                      // }}
                       />
                     </div>
                   ))}
@@ -257,14 +258,14 @@ export default function LoginContainer() {
           </div>
         </ModalFrame>
         )}
-      {writeModalOpen &&
+      {/* {writeModalOpen &&
         <WriteModal
           setModalOpen={setWriteModalOpen}
           // setCurrentOrg={setCurrentOrg}
           setWriteMessage={setWriteMessage}
           handleJoinRequest={() => handleJoinOrganization(currentOrg.organization_id)}
         />
-      }
+      } */}
       <div className='signup-box'>
         <Link to='/signup' className='text-href'>
           회원가입 &gt;
