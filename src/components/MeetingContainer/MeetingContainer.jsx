@@ -1,11 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import './MeetingContainer.css'
+import {WebsocketProvider} from 'y-websocket'
+import * as Y from 'yjs'
+import { useHomeData } from '../../api/useHomeData.jsx';
+import EditorContainer from '../Editor/EditorContainer.js';
 
 function MeetingContainer() {
-    const { meetingId } = useParams();
-
+  const { meetingId } = useParams();
+  let homedata = useHomeData();
+    // const [userList, setUserList] = useState([]);
     // 임시 데이터
     const responseData = [
         { meetingId: 1001, meetingName: "Monthly Update" },
@@ -62,13 +67,14 @@ function MeetingContainer() {
         { meetingId: 9006, meetingName: "Marketing Strategy Review" },
         { meetingId: 9007, meetingName: "Customer Feedback Collection" },
         { meetingId: 9008, meetingName: "Launch Retrospective" },
-        { meetingId: 10001, meetingName: "Process Optimization Review" },
-        { meetingId: 10002, meetingName: "Quarterly Performance Evaluation" },
-        { meetingId: 10003, meetingName: "Q2 Budget Planning" },
-        { meetingId: 10004, meetingName: "Cost Optimization Strategies" },
-        { meetingId: 10005, meetingName: "Expense Report Review" }
+        { meetingId: "67349c9520bddb65c887eb27", meetingName: "회의 테스트" },
+        { meetingId: "6734467a3f99f56d37e5bd2c", meetingName: "Quarterly Performance Evaluation" },
+        { meetingId: "673445f63f99f56d37e5bd2b", meetingName: "Q2 Budget Planning" },
+        { meetingId: "673445293f99f56d37e5bd2a", meetingName: "Cost Optimization Strategies" },
+        { meetingId: "673444cc3f99f56d37e5bd29", meetingName: "Expense Report Review" },
+        { meetingId: '672c7a29f84b974d751fbfea', meetingName: "2024 데이터 분석 프로젝트 미팅" },
     ];
-        
+    
     // Meeting ID에 따른 데이터 필터링
     // 추후 아래 코드는 API 설계 후 수정 필요
     const meeting = responseData.find(item => item.meetingId.toString() === meetingId);
@@ -80,23 +86,13 @@ function MeetingContainer() {
     return (
         <section className='meeting-container'>
             <div className='meeting_title'>
-                <h3>{meeting.meetingName}</h3>
-                <ul className='participants'>
-                <li>
-                    <ProfileImage name="김지우" size='large'/>
-                </li>
-                <li>
-                    <ProfileImage name="Emily Johnson" size='large'/> 
-                </li>
-                <li>
-                    <ProfileImage name="이민서" size='large'/>
-                </li>
-                <li>
-                    <ProfileImage name="Ethan Parker" size='large'/>
-                </li>
-                </ul>
+              <h3>{meeting.meetingName}</h3>
             </div>
-            <div className='realtime_space'></div>
+            <div className='realtime_space'>
+              <div className='editor-container'>
+                <EditorContainer username={homedata?.user?.username}/>
+              </div>
+            </div>
         </section>
     )
 }

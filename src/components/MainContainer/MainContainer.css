@@ -26,31 +26,36 @@
     display: flex;
 }
 
-.toolbar .add-note{
+.toolbar .add-category{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 27px;
     height: 36px;
     margin-right: 8px;
+    border-radius: 5px;
     background-color: #e6e6e6;
 }
 
-.toolbar .add-category{
-    position: relative;
-    top: -18px;
-    width: 0;
-    height: 0;
-    border: 18px solid transparent;
-    border-bottom-color: #e6e6e6;
+.add-category:hover{
+    cursor: pointer;
 }
 
-.toolbar .add-category::before{
-    content: '';
-    position: absolute;
-    left: -18px;
-    top: 18px;
-    width: 0;
-    height: 0;
-    border: 18px solid transparent;
-    border-top-color: #e6e6e6;
+.toolbar .add-meetingnote{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 27px;
+    height: 36px;
+    margin-right: 8px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #e6e6e6;
+    background-color: #0000;
+}
+
+.add-meetingnote:hover{
+    cursor: pointer;
 }
 
 .category-wrap{

@@ -1,9 +1,9 @@
-// api 기능 미개발상태로, 
-// 요청한 데이터에 대해 고정된 값을 반환하도록 설계함
-// 추후 수정이 필요 
+import axios from 'axios';
+import { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 // 임시 데이터
-const response = {
+const temp_response = {
     "code": 200,
     "message": "success",
     "data": {
@@ -100,16 +100,40 @@ const response = {
     }
 };
 
-export const getHomeData = async () => {
-    try {
-      // 추후 fetch 코드 추가
-      if (response.code === 200) {
-          return response.data;
-      } else {
-          throw new Error(`Error: Received status code ${response.code}`);
+export const useHomeData = () => {
+  const [cookies] = useCookies('token');
+  const [homeData, setHomeData] = useState(null);
+
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/home`, {
+          headers: {
+            'Authorization': `Bearer ${cookies.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (response.status === 200) {
+          console.log(response.data.data);
+          setHomeData(response.data.data);
+        } else {
+          throw new Error(`Error: Received status code ${response.status}`);
+        }
+      } catch (error) {
+        // 403 에러 시 임시데이터로 처리, 추후 수정 필요
+        if (error.response && error.response.status === 403) {
+          setHomeData(temp_response.data);
+        } else {
+          setHomeData(false);
+        }
       }
-    } catch (error) {
-      console.error('Error fetching home data:', error);
-      throw error;
-    }
+    };
+
+    fetchHomeData();
+
+  }, [cookies.token]);
+
+  return homeData;
+
 };
