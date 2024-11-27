@@ -33,8 +33,6 @@ function Sidebar() {
   const [userAdminOrg, setUserAdminOrg] = useState([]);
   const [userInfo, setUserInfo] = useState({}); // 회원 정보 조회
   const [currentMessage, setCurrentMessage] = useState({});
-
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,23 +47,6 @@ function Sidebar() {
       });
     }
   }, [userAdminOrg]);
-
-  // const test = async (organization_id, requests_id) => {
-  //   try {
-  //     const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${requests_id}/reject`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${cookies.token}`,
-  //         }
-  //       })
-  //     if (response.data.code === 200) {
-  //       console.log(response.data.data);
-  //     }
-  //   } catch (error) {
-  //     console.error(`회원 정보 조회 에러 \n ${error}`);
-  //   }
-  // }
-
 
   // 회원 정보 조회
   const handleUserInfo = async () => {
@@ -149,18 +130,9 @@ function Sidebar() {
   // 조직 가입 요청 승인 및 거절
   const decideJoinRequest = async (organization_id, request_id, decision) => {
     try {
-      // const response = await axios.post(
-      //   `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
-      //   {
-      //     withCredentials: true,
-      //     headers: {
-      //       Authorization: `Bearer ${cookies.token}`,
-      //       'Content-Type': 'application/json',
-      //     },
-      //   }
-      // );
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/organizations/${organization_id}/join-requests/${request_id}/${decision}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
@@ -171,6 +143,15 @@ function Sidebar() {
 
       if (response.data.code === 200) {
         console.log(response.data.message);
+        setCurrentMessage({});
+        console.log("xxxxxx");
+        console.log(requestMessage);
+        const deletedMessage = requestMessage.filter((message) => message.request_id !== request_id);
+        console.log("asdasd");
+        console.log(deletedMessage);
+        setRequestMessage(deletedMessage);
+
+
       } else {
         console.log('조직 가입 요청에 대한 처리 실패');
       }
