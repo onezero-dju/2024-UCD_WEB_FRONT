@@ -157,14 +157,15 @@ export default function LoginContainer() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizations`,
         {
+          organization_name: genOrgName,
+          description: genOrgDisc,
+        },
+        {
           headers: {
             Authorization: `Bearer ${cookies.token}`,
           },
         },
-        {
-          organization_name: genOrgName,
-          description: genOrgDisc,
-        });
+      );
 
       if (response.data.code === 201) {
         alert("성공적으로 조직이 생성되었습니다.");
