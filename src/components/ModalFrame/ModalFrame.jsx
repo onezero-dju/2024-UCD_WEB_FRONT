@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 
 const ModalFrame = ({
   setModalOpen,
+  secondModalOpen,
   children
 }) => {
 
@@ -12,7 +13,7 @@ const ModalFrame = ({
 
   useOnclickOutside(ref, () => {
     setModalOpen(false);
-  })
+  }, secondModalOpen);
 
   return (
     createPortal(
@@ -34,5 +35,9 @@ const ModalFrame = ({
     )
   )
 }
+
+ModalFrame.defaultProps = {
+  secondModalOpen: false, // isSecondModalOpen이 전달되지 않으면 false로 기본값 설정
+};
 
 export default ModalFrame
