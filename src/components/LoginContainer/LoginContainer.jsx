@@ -121,7 +121,7 @@ export default function LoginContainer() {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/organizations/${id}/join`,
         {
-          message: "가입 신청합니다.",
+          message: writeMessage,
         },
         {
           headers: {
@@ -265,7 +265,7 @@ export default function LoginContainer() {
           setModalOpen={setWriteModalOpen}
           // setCurrentOrg={setCurrentOrg}
           setWriteMessage={setWriteMessage}
-          handleJoinRequest={() => handleJoinOrganization(currentOrg.organization_id)}
+          handleJoinRequest={() => handleJoinOrganization(currentOrg)}
         />
       }
       <div className='signup-box'>

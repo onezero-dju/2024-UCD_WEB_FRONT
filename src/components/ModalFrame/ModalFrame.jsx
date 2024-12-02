@@ -11,9 +11,10 @@ const ModalFrame = ({
 
   const ref = useRef();
 
-  useOnclickOutside(ref, () => {
+  useOnClickOutside(ref, () => {
     setModalOpen(false);
   }, secondModalOpen);
+
   return (
     createPortal(
       <div className='presentation' role="presentation">
