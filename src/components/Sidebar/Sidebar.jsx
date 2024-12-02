@@ -4,14 +4,34 @@ import { NavRectButton } from '../NavRectButton/NavRectButton';
 import { NavCirButton } from '../NavCirButton/NavCirButton';
 import { ProfileImage } from '../ProfileImage/ProfileImage';
 import { HomeDataContext } from '../../hooks/HomeDataContext';
+import { Input } from '../Input/Input';
+import { Button } from '../Button/Button';
+import { useGenOrg } from '../../api/useHandleOrg';
+import { useGenChannel } from '../../api/useHandleChannel';
 import './Sidebar.css'
 import ModalFrame from '../ModalFrame/ModalFrame';
-import { Button } from '../Button/Button';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { P } from 'storybook/internal/components';
 
 function Sidebar() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddOrgModalOpen, setAddOrgModalOpen] = useState(false);
+  const [isGenOrgSectionOpen, setGenOrgSectionOpen] = useState(false);
+  const [genOrgName, setGenOrgName] = useState('');
+  const [genOrgDisc, setGenOrgDisc] = useState('');
+  const [genChannelName, setGenChannelName] = useState('');
+  const [genChannelDisc, setGenChannelDisc] = useState('');
+  const [joinOrgID, setJoinOrgID] = useState('');
+  const [joinOrgMsg, setJoinOrgMsg] = useState('');
+  const [requestMessage, setRequestMessage] = useState([]);
+  const [cookies, setCookie] = useCookies(['token']);
+  const [userAdminOrg, setUserAdminOrg] = useState([]);
+  const [userInfo, setUserInfo] = useState({}); // 회원 정보 조회
+  const [currentMessage, setCurrentMessage] = useState({});
+
+  const { responseData: genOrgResponse, loading: genOrgLoading, error: genOrgError, generateOrganization } = useGenOrg();
+  const { responseData: genChannelResponse, loading: genChannelLoading, error: genChannelError, fetchGenChannel } = useGenChannel();
 
   const {
     homeData,
@@ -23,16 +43,11 @@ function Sidebar() {
     selectedChannels,
     setSelectedOrgId,
     setSelectedChannelId,
+    setSelectedChannelName,
     setSelectedOrgs,
     setSelectedChannels,
-  } = useContext(HomeDataContext); // Context 사용
+  } = useContext(HomeDataContext);
 
-  const [requestMessage, setRequestMessage] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 조직 가입 요청 목록 모달창
-  const [cookies, setCookie] = useCookies(['token']);
-  const [userAdminOrg, setUserAdminOrg] = useState([]);
-  const [userInfo, setUserInfo] = useState({}); // 회원 정보 조회
-  const [currentMessage, setCurrentMessage] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,6 +64,17 @@ function Sidebar() {
     }
   }, [userAdminOrg]);
 
+  useEffect(() => {
+    if (selectedChannels.length > 0) {
+      // 해당 조직의 첫번째 채널을 선택
+      const channelsByOrgId = homeData.organizations.filter(org => org.organization_id == selectedOrgId)[0].channels;
+      const firstChannelId = channelsByOrgId[0].channel_id;
+      const firstChannelName = channelsByOrgId[0].name;
+      setSelectedChannelId(firstChannelId);
+      setSelectedChannelName(firstChannelName);
+    }
+  }, [selectedOrgId]);
+
   // 회원 정보 조회
   const handleUserInfo = async () => {
     try {
@@ -64,6 +90,14 @@ function Sidebar() {
       }
     } catch (error) {
       console.error(`회원 정보 조회 에러 \n ${error}`);
+    }
+    // Channel 클릭 시 실행
+    const handleChannelClick = (e, id, name) => {
+      // 이벤트 버블링 중단
+      e.stopPropagation();
+      setSelectedChannelId(id);
+      setSelectedChannelName(name);
+      navigate('/main')
     }
   }
 
@@ -277,4 +311,4 @@ function Sidebar() {
   )
 }
 
-export default Sidebar
+export default Sidebar;

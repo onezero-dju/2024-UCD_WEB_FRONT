@@ -22,4 +22,6 @@ Button.propTypes = {
   label: PropTypes.string.isRequired,
   /** 버튼 사이즈 지정 */
   size: PropTypes.oneOf(['medium', 'full']),
+  /** 클릭 핸들링 함수 */
+  onClick: PropTypes.func,
 };
