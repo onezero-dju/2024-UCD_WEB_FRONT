@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const useOnclickOutside = (ref, handler, prevent) => {
+const useOnClickOutside = (ref, handler, prevent) => {
   useEffect(() => {
     const listener = (event) => {
       // console.log("event.target", event.target)
@@ -19,4 +19,4 @@ const useOnclickOutside = (ref, handler, prevent) => {
   }, [ref, handler])
 }
 
-export default useOnclickOutside
+export default useOnClickOutside

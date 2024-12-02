@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import './ModalFrame.css'
-import useOnclickOutside from '../../hooks/useOnclickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { createPortal } from "react-dom";
 
 const ModalFrame = ({
@@ -11,7 +11,7 @@ const ModalFrame = ({
 
   const ref = useRef();
 
-  useOnclickOutside(ref, () => {
+  useOnClickOutside(ref, () => {
     setModalOpen(false);
   }, secondModalOpen);
 
