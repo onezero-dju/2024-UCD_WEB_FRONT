@@ -162,6 +162,7 @@ export default function LoginContainer() {
         },
         {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${cookies.token}`,
           },
         },
