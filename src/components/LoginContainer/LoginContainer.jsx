@@ -165,7 +165,8 @@ export default function LoginContainer() {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${cookies.token}`,
           },
-        });
+        },
+      );
 
       if (response.data.code === 201) {
         alert("성공적으로 조직이 생성되었습니다.");
@@ -201,7 +202,7 @@ export default function LoginContainer() {
         </form>
       </div>
       {isModalOpen &&
-        (<ModalFrame setModalOpen={setIsModalOpen}>
+        (<ModalFrame setModalOpen={setIsModalOpen} secondModalOpen={writeModalOpen}>
           <div className={'modal-temp'}>
             <div className={`modal-slider ${isGenOrgSectionOpen ? 'slide-bottom' : 'slide-top'}`}>
               <h4 className='modal-title'>조직 참가하기</h4>
@@ -223,11 +224,11 @@ export default function LoginContainer() {
                       <span>{org.organization_name}</span>
                       <Button
                         label='가입 신청'
-                        onClick={() => handleJoinOrganization(org.organization_id)}
-                      // onClick={() => {
-                      //   setCurrentOrg(org.organization_id)
-                      //   setWriteModalOpen(true);
-                      // }}
+                        // onClick={() => handleJoinOrganization(org.organization_id)}
+                        onClick={() => {
+                          setCurrentOrg(org.organization_id)
+                          setWriteModalOpen(true);
+                        }}
                       />
                     </div>
                   ))}
@@ -259,14 +260,14 @@ export default function LoginContainer() {
           </div>
         </ModalFrame>
         )}
-      {/* {writeModalOpen &&
+      {writeModalOpen &&
         <WriteModal
           setModalOpen={setWriteModalOpen}
           // setCurrentOrg={setCurrentOrg}
           setWriteMessage={setWriteMessage}
           handleJoinRequest={() => handleJoinOrganization(currentOrg.organization_id)}
         />
-      } */}
+      }
       <div className='signup-box'>
         <Link to='/signup' className='text-href'>
           회원가입 &gt;

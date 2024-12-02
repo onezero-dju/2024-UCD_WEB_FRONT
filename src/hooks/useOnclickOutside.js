@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
-const useOnclickOutside = (ref, handler) => {
+const useOnclickOutside = (ref, handler, prevent) => {
   useEffect(() => {
     const listener = (event) => {
       // console.log("event.target", event.target)
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (!ref.current || ref.current.contains(event.target) || prevent) {
         return;
       }
       handler();
