@@ -15,10 +15,26 @@ const WriteModal = ({ setModalOpen, setWriteMessage, handleJoinRequest }) => {
               onClick={() => setModalOpen(false)}
               className="modal-close"
             >X</span>
-            <div className="write-modal-area"></div>
+            <div className='message-component'>
+              <textarea
+                type='text' id='write-join-message' className="message-field"
+                onChange={(e) => setWriteMessage(e.target.value)}
+                required
+              />
+              <label htmlFor='write-join-message' className="message-label">
+                가입 요청 메세지를 입력하세요.
+              </label>
+            </div>
             <div className="write-modal-button-wrapper">
-              <Button>신청</Button>
-              <Button>취소</Button>
+              <Button
+                label='신청'
+                onClick={() => {
+                  handleJoinRequest();
+                  setModalOpen(false);
+                }} />
+              <Button
+                label='취소'
+                onClick={() => setModalOpen(false)} />
             </div>
           </div>
         </div>

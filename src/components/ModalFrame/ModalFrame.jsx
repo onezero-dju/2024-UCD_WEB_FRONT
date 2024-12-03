@@ -1,18 +1,19 @@
 import React, { useEffect, useRef } from 'react'
 import './ModalFrame.css'
-import useOnclickOutside from '../../hooks/useOnclickOutside';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
 import { createPortal } from "react-dom";
 
 const ModalFrame = ({
   setModalOpen,
+  secondModalOpen,
   children
 }) => {
 
   const ref = useRef();
 
-  useOnclickOutside(ref, () => {
+  useOnClickOutside(ref, () => {
     setModalOpen(false);
-  })
+  }, secondModalOpen);
 
   return (
     createPortal(
@@ -34,5 +35,9 @@ const ModalFrame = ({
     )
   )
 }
+
+ModalFrame.defaultProps = {
+  secondModalOpen: false, // isSecondModalOpen이 전달되지 않으면 false로 기본값 설정
+};
 
 export default ModalFrame

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
-const useOnclickOutside = (ref, handler) => {
+const useOnClickOutside = (ref, handler, prevent) => {
   useEffect(() => {
     const listener = (event) => {
       // console.log("event.target", event.target)
-      if (!ref.current || ref.current.contains(event.target)) {
+      if (!ref.current || ref.current.contains(event.target) || prevent) {
         return;
       }
       handler();
@@ -19,4 +19,4 @@ const useOnclickOutside = (ref, handler) => {
   }, [ref, handler])
 }
 
-export default useOnclickOutside
+export default useOnClickOutside

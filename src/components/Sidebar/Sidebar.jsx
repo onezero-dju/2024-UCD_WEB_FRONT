@@ -56,7 +56,8 @@ function Sidebar() {
   }, [])
 
   useEffect(() => {
-    if (userAdminOrg && Array.isArray(userAdminOrg)) {
+    console.log(userAdminOrg[0])
+    if (userAdminOrg.length > 0 && Array.isArray(userAdminOrg)) {
       userAdminOrg.forEach((org) => {
         handleRequestMessage(org.organization_id, org.organization_name);
       });
@@ -111,13 +112,8 @@ function Sidebar() {
       });
       if (response.data.data.length > 0) {
         // admin 권한이 있는 조직만 필터링
-        const adminOrg = response.data.data.map((info) => {
-          let org = {};
-          if (info.role === 'admin') {
-            org = info;
-          }
-          return org
-        })
+        const adminOrg = response.data.data.filter((info) => info.role === 'admin')
+
         setUserAdminOrg(adminOrg)
       }
     } catch (error) {
@@ -177,6 +173,10 @@ function Sidebar() {
 
       if (response.data.code === 200) {
         console.log(response.data.message);
+
+        setCurrentMessage({});
+        const deletedMessage = requestMessage.filter((message) => message.request_id !== request_id);
+        setRequestMessage(deletedMessage);
       } else {
         console.log('조직 가입 요청에 대한 처리 실패');
       }
