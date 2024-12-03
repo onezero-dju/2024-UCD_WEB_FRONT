@@ -1,0 +1,43 @@
+.btn{
+    height: 38px;
+    box-sizing: border-box;
+    border: 1px solid #0066FF;
+    border-radius: 10px;
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-size: 16px;
+} 
+
+.btn.primary{
+    background-color: #0066FF;
+    color: white;
+}
+
+/* .btn.btn.primary:hover {
+  background-color: white;
+  color: #0066FF;
+  transition: 0.5s;
+} */
+
+.btn.secondary{
+    background-color: white;
+    color: #0066FF;
+}
+
+.btn.secondary:hover{
+    background-color: #0066FF;
+    color: white;
+    transition: 0.5s;
+}
+
+.btn.full{
+    width: 100%;
+}
+
+.btn.medium{
+    padding: 0 15px;
+}
+
+.btn:hover{
+    cursor: pointer;
+}

@@ -1,0 +1,48 @@
+.meeting-container{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: flex-start; */
+    flex: 1;
+    padding: 8px 16px;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-rows: 100px 1fr;
+    width: 100%;
+}
+
+.meeting_title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.meeting_title > h3 {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    margin: 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #efefef;
+    font-size: 18px;
+}
+
+.meeting_title .participants {
+    display: flex;
+    height: 50px;
+    margin: 10px 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.realtime_space{
+    flex: 1;
+    box-sizing: border-box;
+    /* border-radius: 20px; */
+    /* border: 1px solid #ababab; */
+    position: relative;
+    overflow: hidden;
+    display: flex;justify-content: center;
+}

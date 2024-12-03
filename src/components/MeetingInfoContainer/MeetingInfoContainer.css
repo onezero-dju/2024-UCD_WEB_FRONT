@@ -1,0 +1,15 @@
+.meeting-info-container{
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    height: 100%;
+    background-color: #e6e6e6; 
+}
+
+.meeting-info-wrap{
+    overflow-y: auto;
+    flex-grow: 1;
+    text-align: left;
+    scrollbar-width: thin;
+    scrollbar-color: #cfcfcf #e6e6e6;
+}
