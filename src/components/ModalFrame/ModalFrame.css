@@ -28,6 +28,11 @@
   opacity: 95%;
 }
 
+.modal-content{
+  display: flex;
+  flex-direction: column;
+}
+
 @keyframes fadeIn {
   from {
       opacity: 0;
