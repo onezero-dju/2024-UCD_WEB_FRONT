@@ -10,7 +10,7 @@ import useCheckLogin from "../../hooks/useCheckLogin";
 
 function MainPage() {
   const { pathname } = useLocation();
-  useCheckLogin('token'); // 로그인 상태 확인
+  // useCheckLogin('token'); // 로그인 상태 확인
 
   return (
     <div className='main-page'>
@@ -18,7 +18,7 @@ function MainPage() {
         <Sidebar />
 
         {pathname.startsWith('/main') && <MainContainer />}
-        {pathname.startsWith('/meeting') && <><MeetingContainer /> <MeetingInfoContainer/></>}
+        {pathname.startsWith('/meeting') && <><MeetingContainer /> <MeetingInfoContainer /></>}
       </HomeDataProvider>
     </div>
   )

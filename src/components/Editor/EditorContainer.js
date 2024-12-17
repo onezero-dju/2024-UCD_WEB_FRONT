@@ -79,7 +79,7 @@ import TaskList from '@tiptap/extension-task-list'
 
 
 // import { FaBold, FaItalic, FaStrikethrough } from "react-icons/fa";
-import { RiBold, RiItalic, RiStrikethrough, RiInsertColumnLeft, RiInsertColumnRight, RiDeleteColumn, RiInsertRowBottom, RiInsertRowTop, RiDeleteRow, RiMergeCellsHorizontal, RiSplitCellsHorizontal} from "react-icons/ri";
+import { RiBold, RiItalic, RiStrikethrough, RiInsertColumnLeft, RiInsertColumnRight, RiDeleteColumn, RiInsertRowBottom, RiInsertRowTop, RiDeleteRow, RiMergeCellsHorizontal, RiSplitCellsHorizontal } from "react-icons/ri";
 
 import { TbTableOff } from "react-icons/tb";
 
@@ -94,13 +94,13 @@ import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 
 
-import { BubbleMenu,FloatingMenu,EditorContent, useEditor } from '@tiptap/react'
+import { BubbleMenu, FloatingMenu, EditorContent, useEditor } from '@tiptap/react'
 import { Editor } from '@tiptap/core'
-import {WebsocketProvider} from 'y-websocket'
+import { WebsocketProvider } from 'y-websocket'
 import * as Y from 'yjs'
 
 const ydoc = new Y.Doc();
-const provider = new WebsocketProvider('ws://localhost:1234','10', ydoc);
+const provider = new WebsocketProvider('ws://localhost:1234', '10', ydoc);
 console.log(provider);
 const awareness = provider.awareness;
 
@@ -173,7 +173,7 @@ const ToC = ({
     </>
   )
 }
-const MemorizedToC = memo(({editor, items})=>{return <ToC editor={editor} items={items}/>})
+const MemorizedToC = memo(({ editor, items }) => { return <ToC editor={editor} items={items} /> })
 function getRandomColor() {
   const letters = '0123456789ABCDEF';
   let color = '#';
@@ -182,7 +182,7 @@ function getRandomColor() {
   }
   return color;
 }
-let color=getRandomColor();
+let color = getRandomColor();
 awareness.on('change', changes => {
   // Whenever somebody updates their awareness information,
   // we log all awareness information from all users.
@@ -199,13 +199,13 @@ const EditorContainer = (props) => {
     name: props.username
   })
 
-  
 
 
 
-  const fetchSSE = async() => {
+
+  const fetchSSE = async () => {
     const eventSource = await new EventSourcePolyfill(`http://localhost:8000/sse/${10}`, {
-			headers:{
+      headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdCIsInN1YiI6InRlc3QiLCJqdGkiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTczMDkwNDIxNywiZXhwIjoxNzM5NTQ0MjE3fQ.IZwtyMmpWI5PJPLAoK0WMqlmeXFm2dSLdEQEo8JuBho`
       },
     });
@@ -233,43 +233,43 @@ const EditorContainer = (props) => {
       }
     };
   };
-  useEffect(()=>{
-  },[])
-  useEffect(()=>{
+  useEffect(() => {
+  }, [])
+  useEffect(() => {
     fetchSSE();
     reqRealtime();
-},[])
-  const reqRealtime = async()=>{
-    await axios.get('http://localhost:8000/realtime/info/10',{
+  }, [])
+  const reqRealtime = async () => {
+    await axios.get('http://localhost:8000/realtime/info/10', {
       responseType: 'arraybuffer',
-      headers:{
+      headers: {
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdCIsInN1YiI6InRlc3QiLCJqdGkiOiIxIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTczMDkwNDIxNywiZXhwIjoxNzM5NTQ0MjE3fQ.IZwtyMmpWI5PJPLAoK0WMqlmeXFm2dSLdEQEo8JuBho`
       }
     })  // 바이너리 데이터 요청
-    .then(res => {
-      // 서버가 바이너리 데이터로 응답할 경우
-      const byteArray = new Uint8Array(res.data);
+      .then(res => {
+        // 서버가 바이너리 데이터로 응답할 경우
+        const byteArray = new Uint8Array(res.data);
 
-      if (byteArray.length === 0) {
-        console.log('Received empty update');
-        return;
-      }
+        if (byteArray.length === 0) {
+          console.log('Received empty update');
+          return;
+        }
 
-      console.log('Received update:', byteArray);
+        console.log('Received update:', byteArray);
 
-      // Yjs 문서에 업데이트 적용
-      // Y.applyUpdate(byteArray);
-      Y.logUpdate(byteArray)
+        // Yjs 문서에 업데이트 적용
+        // Y.applyUpdate(byteArray);
+        Y.logUpdate(byteArray)
 
-      // const stateVector = Y.encodeStateVector(byteArray)
+        // const stateVector = Y.encodeStateVector(byteArray)
 
-      // const diff = Y.encodeStateAsUpdate(ydoc, stateVector)
-      Y.applyUpdate(ydoc, byteArray)
-      // Y.encodeStateAsUpdate(byteArray)
-    })
-    .catch(err => {
-      console.log(err);
-    });
+        // const diff = Y.encodeStateAsUpdate(ydoc, stateVector)
+        Y.applyUpdate(ydoc, byteArray)
+        // Y.encodeStateAsUpdate(byteArray)
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   const editor = useEditor({
@@ -388,19 +388,19 @@ const EditorContainer = (props) => {
       editor.chain().focus().setImage({ src: url }).run()
     }
   }, [editor])
-  const MenuBar = ({editor}) => {
-  
+  const MenuBar = ({ editor }) => {
+
     if (!editor) {
       return null
     }
-  
+
     return (
       <div className="control-group">
         <div className="button-group">
           <button
-              onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
-              }
-            >
+            onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+            }
+          >
             Insert table
           </button>
           <button
@@ -574,7 +574,7 @@ const EditorContainer = (props) => {
       </div>
     )
   }
-  
+
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -595,21 +595,36 @@ const EditorContainer = (props) => {
         <MenuBar editor={editor}/>
         
       </div> */}
-      
+
       <ul className='participants'>
         {
-          Array.from(awareness.getStates().values())?.map((it, idx)=>{
-            if(!(it.user?.name))return;
-            return(
-              <li>
-                  <ProfileImage name={it.user?.username} color={it.user?.color} size='large'/>
-              </li>
+          Array.from(awareness.getStates().values())?.map((it, idx) => {
+            // if (!(it.user?.name)) return;
+            return (
+              <>
+                <li>
+                  <ProfileImage name={"민혁"} color={it.user?.color} size='large' />
+                  {/* <ProfileImage name="진우" color={it.user?.color} size='large' /> */}
+                </li>
+                <li>
+                  <ProfileImage name={"기택"} color={"black"} size='large' />
+                  {/* <ProfileImage name="진우" color={it.user?.color} size='large' /> */}
+                </li>
+                <li>
+                  <ProfileImage name={"정준"} color={"#0066FF"} size='large' />
+                  {/* <ProfileImage name="진우" color={it.user?.color} size='large' /> */}
+                </li>
+                <li>
+                  <ProfileImage name={"진우"} color={"#334422"} size='large' />
+                  {/* <ProfileImage name="진우" color={it.user?.color} size='large' /> */}
+                </li>
+              </>
             )
           })
         }
       </ul>
-      <EditorContent editor={editor}/>
-      
+      <EditorContent editor={editor} />
+
       {/* <div className="sidebar">
         <div className="sidebar-options">
           <div className="label-large">목차</div>
@@ -618,7 +633,7 @@ const EditorContainer = (props) => {
           </div>
         </div>
       </div> */}
-      
+
       <>
         {editor && <BubbleMenu className="bubble-menu" tippyOptions={{ duration: 100 }} editor={editor}>
           <div
@@ -626,7 +641,7 @@ const EditorContainer = (props) => {
             className={`bubble-menu-button bold ${editor.isActive('bold') ? 'is-active' : ''}`}
           >
             {/* Bold */}
-            <RiBold/>
+            <RiBold />
             <Tooltip anchorSelect=".bubble-menu-button.bold" place="top">
               Bold
             </Tooltip>
@@ -636,7 +651,7 @@ const EditorContainer = (props) => {
             className={`bubble-menu-button italic ${editor.isActive('italic') ? 'is-active' : ''}`}
           >
             {/* Italic */}
-            <RiItalic/>
+            <RiItalic />
             <Tooltip anchorSelect=".bubble-menu-button.italic" place="top">
               Italic
             </Tooltip>
@@ -646,78 +661,78 @@ const EditorContainer = (props) => {
             className={`bubble-menu-button strike ${editor.isActive('strike') ? 'is-active' : ''}`}
           >
             {/* Strike */}
-            <RiStrikethrough/>
+            <RiStrikethrough />
             <Tooltip anchorSelect=".bubble-menu-button.strike" place="top">
               Strike
             </Tooltip>
           </div>
           {
-            editor.isActive('table')&&<>
-              <div className={`bubble-menu-button insertColumnLeft tableButton`} onClick={() =>{editor.chain().focus().addColumnBefore().run()}}>
+            editor.isActive('table') && <>
+              <div className={`bubble-menu-button insertColumnLeft tableButton`} onClick={() => { editor.chain().focus().addColumnBefore().run() }}>
                 {/* 열 이전 추가 */}
-                <RiInsertColumnLeft/>
+                <RiInsertColumnLeft />
                 <Tooltip anchorSelect=".bubble-menu-button.insertColumnLeft" place="top">
                   열 이전 추가
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button insertColumnRight tableButton`} onClick={() => editor.chain().focus().addColumnAfter().run()}>
                 {/* 열 이후 추가 */}
-                <RiInsertColumnRight/>
+                <RiInsertColumnRight />
                 <Tooltip anchorSelect=".bubble-menu-button.insertColumnRight" place="top">
                   열 이후 추가
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button deleteColumn tableButton`} onClick={() => editor.chain().focus().deleteColumn().run()}>
                 {/* 열 삭제 */}
-                <RiDeleteColumn/>
+                <RiDeleteColumn />
                 <Tooltip anchorSelect=".bubble-menu-button.deleteColumn" place="top">
                   열 삭제
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button insertRowTop tableButton`} onClick={() => editor.chain().focus().addRowBefore().run()}>
                 {/* 행 이전 추가 */}
-                <RiInsertRowTop/>
+                <RiInsertRowTop />
                 <Tooltip anchorSelect=".bubble-menu-button.insertRowTop" place="top">
                   행 이전 추가
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button insertRowBottom tableButton`} onClick={() => editor.chain().focus().addRowAfter().run()}>
                 {/* 행 이후 추가 */}
-                <RiInsertRowBottom/>
+                <RiInsertRowBottom />
                 <Tooltip anchorSelect=".bubble-menu-button.insertRowBottom" place="top">
                   행 이전 추가
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button deleteRow tableButton`} onClick={() => editor.chain().focus().deleteRow().run()}>
                 {/* 행 삭제 */}
-                <RiDeleteRow/>
+                <RiDeleteRow />
                 <Tooltip anchorSelect=".bubble-menu-button.deleteRow" place="top">
                   행 삭제
                 </Tooltip>
               </div>
-              
+
               <div className={`bubble-menu-button mergeCell tableButton`} onClick={() => editor.chain().focus().mergeCells().run()}>
                 {/* 셀 병합 */}
-                <RiMergeCellsHorizontal/>
+                <RiMergeCellsHorizontal />
                 <Tooltip anchorSelect=".bubble-menu-button.mergeCell" place="top">
                   셀 병합
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button splitCell tableButton`} onClick={() => editor.chain().focus().splitCell().run()}>
                 {/* 셀 분할 */}
-                <RiSplitCellsHorizontal/>
+                <RiSplitCellsHorizontal />
                 <Tooltip anchorSelect=".bubble-menu-button.splitCell" place="top">
                   셀 분할
                 </Tooltip>
               </div>
               <div className={`bubble-menu-button deleteTable tableButton`} onClick={() => editor.chain().focus().deleteTable().run()}>
-                <TbTableOff/>
+                <TbTableOff />
                 <Tooltip anchorSelect=".bubble-menu-button.deleteTable" place="top">
                   표 삭제
                 </Tooltip>
               </div>
               {/* <button onClick={() => editor.chain().focus().mergeOrSplit().run()}> */}
-                {/* Merge or split */}
+              {/* Merge or split */}
 
               {/* </button> */}
             </>
